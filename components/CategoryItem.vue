@@ -1,10 +1,27 @@
 <template>
   <div>
-    <div @click="toggle" class="cursor-pointer">
-      <div class="underline underline-2 hover:text-red-500">
+    <div class="flex gap-1">
+      <nuxt-link
+        :to="`/categories/${category.name.en.toLowerCase().replace(/ /g, '-')}`"
+        class="underline"
+      >
         {{ category.name.en }}
+      </nuxt-link>
+      <div v-if="hasSubcategory" class="cursor-pointer" @click="toggle">
+        {{ ' >' }}
       </div>
     </div>
+    <!--  <div v-if="hasSubcategory" class="w-max cursor-pointer" @click="toggle">
+      {{ category.name.en + ' >' }}
+    </div>
+
+    <nuxt-link
+      v-else
+      :to="`/${category.name.en.toLowerCase().replace(/ /g, '-')}`"
+      class="underline"
+    >
+      {{ category.name.en }}
+    </nuxt-link> -->
     <div v-if="isOpen" class="ml-4">
       <div v-for="subCategory in category.categories" :key="subCategory.id">
         <CategoryItem :category="subCategory" />
@@ -17,7 +34,7 @@
 import { ref } from 'vue'
 import type { Category } from '../composables/useCategory'
 
-withDefaults(defineProps<{ category: Category }>(), {
+const props = withDefaults(defineProps<{ category: Category }>(), {
   category: () => ({
     id: '',
     parent_category_id: '',
@@ -36,6 +53,7 @@ const isOpen = ref(false)
 const toggle = () => {
   isOpen.value = !isOpen.value
 }
+const hasSubcategory = computed(() => props.category.categories?.length)
 </script>
 
 <style scoped>

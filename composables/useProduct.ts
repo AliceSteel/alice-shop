@@ -1,16 +1,5 @@
-import PRODUCTS from './PRODUCTS'
+import DATA from './data.json'
 
-export type Product = {
-  category: string
-  title: string
-  imageUrl?: string
-  id?: number
-  path?: string
-}
+export const useProduct = (id: number) => DATA.products.find((product) => product.id === id)
+export const findProductsByCategory = (category: string) => DATA.products.filter((product) => product.categories.includes(category))
 
-export const useProduct = (): Product[] => {
-  return PRODUCTS.map((product:Product) => ({
-    ...product,
-    path: `/${product.category}/products/${product.title.toLowerCase().replace(/ /g, '-')}`,
-  }))
-}
