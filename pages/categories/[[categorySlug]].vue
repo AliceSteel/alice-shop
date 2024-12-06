@@ -11,13 +11,11 @@
 
 <script setup lang="ts">
 import ProductCard from '~/components/ProductCard.vue'
-import { useRoute } from 'vue-router'
-import { computed } from 'vue'
-import { findProductsByCategory } from '~/composables/useProduct'
+import { useCategoryForProducts } from '~/composables/useCategoryForProducts'
 
 const route = useRoute()
 
 const category = computed(() => route.params.categorySlug)
 
-const products = computed(() => findProductsByCategory(category?.value))
+const products = await useCategoryForProducts(category?.value as string)
 </script>

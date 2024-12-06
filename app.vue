@@ -23,12 +23,10 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
 import { useCategory } from './composables/useCategory'
 import CategoryItem from './components/CategoryItem.vue'
 
 const categories = ref(useCategory())
-const router = useRouter()
 </script>
 
 <style scoped>

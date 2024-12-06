@@ -4,17 +4,3 @@
     <p>Please choose your category</p>
   </div>
 </template>
-<!-- <script setup lang="ts">
-import { ref } from 'vue'
-import { useCategory } from '../composables/useCategory'
-import CategoryItem from '../components/CategoryItem.vue'
-
-const categories = ref(useCategory())
-</script> -->
-
-<!-- <style scoped>
-.router-link-active {
-  color: red;
-}
-</style>
- -->

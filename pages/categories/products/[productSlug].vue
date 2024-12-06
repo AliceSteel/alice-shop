@@ -1,5 +1,5 @@
 <template>
-  <div class="w-4/5 mx-auto flex flex-col items-start gap-4" v-if="product">
+  <div class="w-4/5 mx-auto flex flex-col items-start gap-4">
     <h1 class="text-center">Product Page</h1>
     <h4>{{ name }}</h4>
     <p>Brand: {{ product.brand }}</p>
@@ -15,9 +15,10 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
 import { useProduct } from '~/composables/useProduct'
+
 const route = useRoute()
 
-const productId = computed(() => Number(route.params.product))
-const product = computed(() => useProduct(productId.value))
-const name = computed(() => product.value.name.en || product.value.name.dk)
+const product = await useProduct(route?.params?.productSlug as string)
+
+const name = computed(() => (product ? product.name?.en || product.name?.dk : 'Product Name'))
 </script>

@@ -11,17 +11,6 @@
         {{ ' >' }}
       </div>
     </div>
-    <!--  <div v-if="hasSubcategory" class="w-max cursor-pointer" @click="toggle">
-      {{ category.name.en + ' >' }}
-    </div>
-
-    <nuxt-link
-      v-else
-      :to="`/${category.name.en.toLowerCase().replace(/ /g, '-')}`"
-      class="underline"
-    >
-      {{ category.name.en }}
-    </nuxt-link> -->
     <div v-if="isOpen" class="ml-4">
       <div v-for="subCategory in category.categories" :key="subCategory.id">
         <CategoryItem :category="subCategory" />
