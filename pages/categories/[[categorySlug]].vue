@@ -1,7 +1,7 @@
 <template>
   <div class="w-full flex flex-col items-center gap-4">
     <h4>Category {{ category }}</h4>
-    <div class="w-full flex flex-wrap gap-2">
+    <div class="flex flex-wrap gap-2">
       <div v-for="(product, key) in products" :key="key">
         <ProductCard :item="product" />
       </div>

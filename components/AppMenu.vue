@@ -1,12 +1,9 @@
 <template>
   <nav
-    class="fixed z-20 top-10 -left-40 flex flex-col gap-2 items-start px-8 py-4 transition-all duration-300 ease-in bg-opacity-0 uppercase"
-    :class="{ 'left-0 bg-white bg-opacity-40 rounded-3xl h-max backdrop-blur-sm': isMenuOpen }"
-    
+    class="fixed z-20 top-10 left-0 flex flex-col gap-2 items-start px-8 py-4 uppercase"
   >
     <button
-      class="relative top-0 rounded-3xl p-4"
-      :class="{ 'left-0' : isMenuOpen, 'bg-white bg-opacity-30 backdrop-blur-sm left-[130%]' : !isMenuOpen }"
+      class="relative left-0 top-0 rounded-full p-4 bg-white bg-opacity-30 backdrop-blur-sm"
       @click.prevent.stop="toggleMenu"
     >
       {{ isMenuOpen ? 'X' : 'Menu' }}
@@ -14,6 +11,8 @@
     <div
       v-for="category in categories"
       :key="category.id"
+      class="relative -left-full bg-lime-400 bg-opacity-0 rounded-3xl h-max backdrop-blur-sm p-4 transition-all duration-300 ease-in"
+      :class="{ 'left-0 bg-opacity-40': isMenuOpen }"
       
     >
       <CategoryItem :category="category" />

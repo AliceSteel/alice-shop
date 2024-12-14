@@ -1,6 +1,6 @@
 <template>
   <header
-    class="w-full px-9 h-10 fixed top-0 left-0 z-10 flex justify-end items-center text-black"
+    class="w-full px-9 py-1 h-11 fixed top-0 left-0 z-10 flex justify-end items-center text-black"
   >
     <nuxt-link
       to="/"
@@ -16,7 +16,7 @@
       title="Cart"
       class="h-full flex items-center gap-4 bg-transparent pl-4 backdrop-blur-sm"
     >
-      ><svg
+      <svg
         height="100%"
         version="1.1"
         id="Layer_1"
