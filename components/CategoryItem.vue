@@ -20,33 +20,33 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import type { Category } from '../composables/useCategory'
+  import { ref } from 'vue'
+  import type { Category } from '../composables/useCategory'
 
-const props = withDefaults(defineProps<{ category: Category }>(), {
-  category: () => ({
-    id: '',
-    parent_category_id: '',
-    level: 0,
-    name: {
-      en: '',
-      dk: ''
-    },
-    categories: [],
-    path: ''
+  const props = withDefaults(defineProps<{ category: Category }>(), {
+    category: () => ({
+      id: '',
+      parent_category_id: '',
+      level: 0,
+      name: {
+        en: '',
+        dk: ''
+      },
+      categories: [],
+      path: ''
+    })
   })
-})
 
-const isOpen = ref(false)
+  const isOpen = ref(false)
 
-const toggle = () => {
-  isOpen.value = !isOpen.value
-}
-const hasSubcategory = computed(() => props.category.categories?.length)
+  const toggle = () => {
+    isOpen.value = !isOpen.value
+  }
+  const hasSubcategory = computed(() => props.category.categories?.length)
 </script>
 
 <style scoped>
-.cursor-pointer {
-  cursor: pointer;
-}
+  .cursor-pointer {
+    cursor: pointer;
+  }
 </style>

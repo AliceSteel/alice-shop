@@ -13,12 +13,17 @@
 </template>
 
 <script setup lang="ts">
-import { useRoute } from 'vue-router'
-import { useProduct } from '~/composables/useProduct'
 
-const route = useRoute()
+  const route = useRoute()
 
-const product = await useProduct(route?.params?.productSlug as string)
+  const pageTitle = computed(() => route.params.productSlug as string)
+  useHead({
+    title: pageTitle.value
+  })
 
-const name = computed(() => (product ? product.name?.en || product.name?.dk : 'Product Name'))
+  const product = await useProduct(route?.params?.productSlug as string)
+
+  const name = computed(() =>
+    product ? product.name?.en || product.name?.dk : 'Product Name'
+  )
 </script>

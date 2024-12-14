@@ -8,18 +8,17 @@ export type Category = {
     en: string
     dk: string
   }
-  categories?: Category[],
-  path?: string,
+  categories?: Category[]
+  path?: string
   hasSubcategory?: boolean
 }
 
 export const useCategory = (): Category[] => {
-  
   const extractLevel1Categories = (categories: Category[]): Category[] => {
     return categories.map((category: Category) => ({
       ...category,
       path: `/${category.name.en.toLowerCase().replace(/ /g, '-')}`,
-      hasSubcategory: !!category?.categories?.length,
+      hasSubcategory: !!category?.categories?.length
     }))
   }
 
@@ -27,4 +26,6 @@ export const useCategory = (): Category[] => {
 }
 
 export const findCategory = (category: string) =>
-  DATA.categories.categories.find((cat:Category) => cat.name.en.toLowerCase().replace(/ /g, '-') === category)
+  DATA.categories.categories.find(
+    (cat: Category) => cat.name.en.toLowerCase().replace(/ /g, '-') === category
+  )

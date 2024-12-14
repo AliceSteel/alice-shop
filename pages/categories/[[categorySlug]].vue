@@ -10,12 +10,13 @@
 </template>
 
 <script setup lang="ts">
-import ProductCard from '~/components/ProductCard.vue'
-import { useCategoryForProducts } from '~/composables/useCategoryForProducts'
+  const route = useRoute()
 
-const route = useRoute()
+  const category = computed(() => route.params.categorySlug as string)
 
-const category = computed(() => route.params.categorySlug)
+  const products = await useCategoryForProducts(category?.value as string)
 
-const products = await useCategoryForProducts(category?.value as string)
+  useHead({
+    title: `Alice Shop - ${category.value}`.toLocaleUpperCase()
+  })
 </script>
