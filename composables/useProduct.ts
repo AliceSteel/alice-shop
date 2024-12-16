@@ -1,3 +1,5 @@
+import type { Product } from '~/types/Product.d'
+
 export const useProduct = async (productSlug: number | string) => {
   const { data, error } = await useFetch(
     `/api/categories/products/${productSlug}`
@@ -7,5 +9,5 @@ export const useProduct = async (productSlug: number | string) => {
   }
   const product = data.value
 
-  return product
+  return product as Product
 }

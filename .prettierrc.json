@@ -8,5 +8,9 @@
   "endOfLine": "auto",
   "vueIndentScriptAndStyle": true,
   "proseWrap": "always",
-  "bracketSameLine": false
+  "bracketSameLine": false,
+  "plugins": ["prettier-plugin-vue"],
+  "vueSingleFileComponentOptions": {
+    "singleAttributePerLine": true
+  }
 }

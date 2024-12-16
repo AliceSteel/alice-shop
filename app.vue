@@ -1,27 +1,39 @@
 <template>
   <div>
-    <AppHeader />
-    <div class="p-8 w-full min-h-screen bg-lime-200 text-lg flex gap-8">
-      <AppMenu />
+    <NuxtLayout name="default">
       <NuxtErrorBoundary>
         <NuxtPage />
-        <template #error="{ error }">
+        <template #error="{ error, clearError }">
           <p>
-            Oh no, something broke in a category!
+            Oh no, something broke on client!
             <code>{{ error }}</code>
           </p>
+          <button @click="reset(clearError)" class="font-semibold">
+            Home Page
+          </button>
         </template>
       </NuxtErrorBoundary>
-    </div>
+    </NuxtLayout>
   </div>
 </template>
 
 <script setup lang="ts">
+  import { useConfigStore } from '~/stores/configStore'
 
+  //client-side error handling:
+  const reset = async (clearError: () => void) => {
+    await navigateTo('/')
+    clearError()
+  }
+  const configStore = useConfigStore()
+
+  onMounted(() => {
+    configStore.init()
+  })
 </script>
 
 <style>
   .router-link-active {
-    color: red;
-  }
+  color: red;
+}
 </style>

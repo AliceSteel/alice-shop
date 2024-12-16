@@ -665,298 +665,237 @@
       "categories": ["kids"]
     }
   ],
-  "categories": {
-    "id": "root",
-    "parent_category_id": "",
-    "level": 0,
-    "name": {
-      "en": "Root",
-      "dk": "Rod"
-    },
-    "categories": [
-      {
-        "id": "adults",
-        "parent_category_id": "root",
-        "level": 1,
-        "name": {
-          "en": "Adults",
-          "dk": "Voksen"
-        },
-        "categories": [
-          {
-            "id": "men",
-            "parent_category_id": "adults",
-            "level": 2,
-            "name": {
-              "en": "Men",
-              "dk": "Mænd"
-            },
-            "categories": [
-              {
-                "id": "men_newin",
-                "parent_category_id": "men",
-                "level": 3,
-                "name": {
-                  "en": "New In",
-                  "dk": "Nyheder"
-                }
-              },
-              {
-                "id": "men_clothes",
-                "parent_category_id": "men",
-                "level": 3,
-                "name": {
-                  "en": "Clothes",
-                  "dk": "Tøj"
-                },
-                "categories": [
-                  {
-                    "id": "men_jeans",
-                    "parent_category_id": "men_clothes",
-                    "level": 4,
-                    "name": {
-                      "en": "Jeans",
-                      "dk": "Jeans"
-                    }
-                  },
-                  {
-                    "id": "men_shirts",
-                    "parent_category_id": "men_clothes",
-                    "level": 4,
-                    "name": {
-                      "en": "Shirts",
-                      "dk": "Skjorter"
-                    },
-                    "categories": [
-                      {
-                        "id": "men_shirts_ls",
-                        "parent_category_id": "men_shirts",
-                        "level": 5,
-                        "name": {
-                          "en": "Shirts: Long Sleeves",
-                          "dk": "Skjorter: Lange Ærmer"
-                        }
-                      },
-                      {
-                        "id": "men_shirts_ss",
-                        "parent_category_id": "men_shirts",
-                        "level": 5,
-                        "name": {
-                          "en": "Shirts: Short Sleeves",
-                          "dk": "Skjorter: Korte Ærmer"
-                        }
-                      }
-                    ]
-                  },
-                  {
-                    "id": "men_jackets",
-                    "parent_category_id": "men_clothes",
-                    "level": 4,
-                    "name": {
-                      "en": "Jackets",
-                      "dk": "Jakker"
-                    }
-                  },
-                  {
-                    "id": "men_trousers",
-                    "parent_category_id": "men_clothes",
-                    "level": 4,
-                    "name": {
-                      "en": "Trousers",
-                      "dk": "Bukser"
-                    }
-                  },
-                  {
-                    "id": "men_sweatshirts",
-                    "parent_category_id": "men_clothes",
-                    "level": 4,
-                    "name": {
-                      "en": "Sweatshirts",
-                      "dk": "Sweatshirts"
-                    }
-                  },
-                  {
-                    "id": "men_tshirts",
-                    "parent_category_id": "men_clothes",
-                    "level": 4,
-                    "name": {
-                      "en": "T-shirts",
-                      "dk": "T-shirts"
-                    }
-                  },
-                  {
-                    "id": "men_suit",
-                    "parent_category_id": "men_clothes",
-                    "level": 4,
-                    "name": {
-                      "en": "Suits",
-                      "dk": "Jakkesæt"
-                    }
-                  }
-                ]
-              },
-              {
-                "id": "men_sales",
-                "parent_category_id": "men",
-                "level": 3,
-                "name": {
-                  "en": "Sales",
-                  "dk": "Udsalg"
-                },
-                "categories": [
-                  {
-                    "id": "last_week_sales",
-                    "parent_category_id": "men_sales",
-                    "level": 4,
-                    "name": {
-                      "en": "Sales: Last Week",
-                      "dk": "Udsalg: Sidste Uge"
-                    }
-                  },
-                  {
-                    "id": "last_month_sales",
-                    "parent_category_id": "men_sales",
-                    "level": 4,
-                    "name": {
-                      "en": "Sales: Last Month",
-                      "dk": "Udsalg: Sidste Måned"
-                    }
-                  }
-                ]
-              }
-            ]
+
+  "categories": [
+    {
+      "id": "adults",
+      "parent_category_id": "root",
+      "level": 1,
+      "name": {
+        "en": "Adults",
+        "dk": "Voksen"
+      },
+      "categories": [
+        {
+          "id": "men",
+          "parent_category_id": "adults",
+          "level": 2,
+          "name": {
+            "en": "Men",
+            "dk": "Mænd"
           },
-          {
-            "id": "women",
-            "parent_category_id": "adults",
-            "level": 2,
-            "name": {
-              "en": "Women",
-              "dk": "Kvinder"
-            },
-            "categories": [
-              {
-                "id": "women_newin",
-                "parent_category_id": "women",
-                "level": 3,
-                "name": {
-                  "en": "New In",
-                  "dk": "Nyheder"
-                }
-              },
-              {
-                "id": "women_clothes",
-                "parent_category_id": "women",
-                "level": 3,
-                "name": {
-                  "en": "Clothes",
-                  "dk": "Tøj"
-                }
-              },
-              {
-                "id": "women_sales",
-                "parent_category_id": "women",
-                "level": 3,
-                "name": {
-                  "en": "Sales",
-                  "dk": "Udsalg"
-                },
-                "categories": [
-                  {
-                    "id": "women_trend",
-                    "parent_category_id": "women_sales",
-                    "level": 4,
-                    "name": {
-                      "en": "Trending",
-                      "dk": "Trending"
-                    }
-                  },
-                  {
-                    "id": "women_last_week_sales",
-                    "parent_category_id": "women_sales",
-                    "level": 4,
-                    "name": {
-                      "en": "Sales: Last Week",
-                      "dk": "Udsalg: Sidste Uge"
-                    }
-                  },
-                  {
-                    "id": "inspiration",
-                    "parent_category_id": "women_sales",
-                    "level": 4,
-                    "name": {
-                      "en": "Inspiration",
-                      "dk": "Inspiration"
-                    }
-                  }
-                ]
+          "categories": [
+            {
+              "id": "men_newin",
+              "parent_category_id": "men",
+              "level": 3,
+              "name": {
+                "en": "New In",
+                "dk": "Nyheder"
               }
-            ]
-          }
-        ]
-      },
-      {
-        "id": "kids",
-        "parent_category_id": "root",
-        "level": 1,
-        "name": {
-          "en": "Kids",
-          "dk": "Børn"
+            },
+            {
+              "id": "men_clothes",
+              "parent_category_id": "men",
+              "level": 3,
+              "name": {
+                "en": "Clothes",
+                "dk": "Tøj"
+              },
+              "categories": [
+                {
+                  "id": "men_jeans",
+                  "parent_category_id": "men_clothes",
+                  "level": 4,
+                  "name": {
+                    "en": "Jeans",
+                    "dk": "Jeans"
+                  }
+                },
+                {
+                  "id": "men_shirts",
+                  "parent_category_id": "men_clothes",
+                  "level": 4,
+                  "name": {
+                    "en": "Shirts",
+                    "dk": "Skjorter"
+                  },
+                  "categories": [
+                    {
+                      "id": "men_shirts_ls",
+                      "parent_category_id": "men_shirts",
+                      "level": 5,
+                      "name": {
+                        "en": "Shirts: Long Sleeves",
+                        "dk": "Skjorter: Lange Ærmer"
+                      }
+                    },
+                    {
+                      "id": "men_shirts_ss",
+                      "parent_category_id": "men_shirts",
+                      "level": 5,
+                      "name": {
+                        "en": "Shirts: Short Sleeves",
+                        "dk": "Skjorter: Korte Ærmer"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "men_jackets",
+                  "parent_category_id": "men_clothes",
+                  "level": 4,
+                  "name": {
+                    "en": "Jackets",
+                    "dk": "Jakker"
+                  }
+                },
+                {
+                  "id": "men_trousers",
+                  "parent_category_id": "men_clothes",
+                  "level": 4,
+                  "name": {
+                    "en": "Trousers",
+                    "dk": "Bukser"
+                  }
+                },
+                {
+                  "id": "men_sweatshirts",
+                  "parent_category_id": "men_clothes",
+                  "level": 4,
+                  "name": {
+                    "en": "Sweatshirts",
+                    "dk": "Sweatshirts"
+                  }
+                },
+                {
+                  "id": "men_tshirts",
+                  "parent_category_id": "men_clothes",
+                  "level": 4,
+                  "name": {
+                    "en": "T-shirts",
+                    "dk": "T-shirts"
+                  }
+                },
+                {
+                  "id": "men_suit",
+                  "parent_category_id": "men_clothes",
+                  "level": 4,
+                  "name": {
+                    "en": "Suits",
+                    "dk": "Jakkesæt"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "men_sales",
+              "parent_category_id": "men",
+              "level": 3,
+              "name": {
+                "en": "Sales",
+                "dk": "Udsalg"
+              },
+              "categories": [
+                {
+                  "id": "last_week_sales",
+                  "parent_category_id": "men_sales",
+                  "level": 4,
+                  "name": {
+                    "en": "Sales: Last Week",
+                    "dk": "Udsalg: Sidste Uge"
+                  }
+                },
+                {
+                  "id": "last_month_sales",
+                  "parent_category_id": "men_sales",
+                  "level": 4,
+                  "name": {
+                    "en": "Sales: Last Month",
+                    "dk": "Udsalg: Sidste Måned"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "women",
+          "parent_category_id": "adults",
+          "level": 2,
+          "name": {
+            "en": "Women",
+            "dk": "Kvinder"
+          },
+          "categories": [
+            {
+              "id": "women_newin",
+              "parent_category_id": "women",
+              "level": 3,
+              "name": {
+                "en": "New In",
+                "dk": "Nyheder"
+              }
+            },
+            {
+              "id": "women_clothes",
+              "parent_category_id": "women",
+              "level": 3,
+              "name": {
+                "en": "Clothes",
+                "dk": "Tøj"
+              }
+            },
+            {
+              "id": "women_sales",
+              "parent_category_id": "women",
+              "level": 3,
+              "name": {
+                "en": "Sales",
+                "dk": "Udsalg"
+              },
+              "categories": [
+                {
+                  "id": "women_trend",
+                  "parent_category_id": "women_sales",
+                  "level": 4,
+                  "name": {
+                    "en": "Trending",
+                    "dk": "Trending"
+                  }
+                },
+                {
+                  "id": "women_last_week_sales",
+                  "parent_category_id": "women_sales",
+                  "level": 4,
+                  "name": {
+                    "en": "Sales: Last Week",
+                    "dk": "Udsalg: Sidste Uge"
+                  }
+                },
+                {
+                  "id": "inspiration",
+                  "parent_category_id": "women_sales",
+                  "level": 4,
+                  "name": {
+                    "en": "Inspiration",
+                    "dk": "Inspiration"
+                  }
+                }
+              ]
+            }
+          ]
         }
+      ]
+    },
+    {
+      "id": "kids",
+      "parent_category_id": "root",
+      "level": 1,
+      "name": {
+        "en": "Kids",
+        "dk": "Børn"
       }
-    ]
-  },
-  "promotionalSpots": [
-    {
-      "link": "#",
-      "position": 16,
-      "type": "2x2",
-      "image": {
-        "aspectRatio": "606:863",
-        "imageUrl": "https://images.jackjones.com/media/4lriv153/w47upd1-promo-sweats-dayz4-da-dk.jpg?v=0c9d0aff-f07a-4448-99a3-b514e9b619d6",
-        "focalPoint": {
-          "x": 0.5,
-          "y": 0.5
-        },
-        "maxWidth": "606",
-        "alt": "w47upd1-promo-customerclub-dayz4-da-dk.jpg"
-      },
-      "imageAltText": "",
-      "_alias": "promotionWidget"
-    },
-    {
-      "link": "#",
-      "position": 11,
-      "type": "2x1",
-      "image": {
-        "aspectRatio": "606:863",
-        "imageUrl": "https://images.veromoda.com/media/m5niwwxs/w46_bw_jackets-1-da-dk.jpg?v=53784ae0-0670-4b57-bd78-d85636cb50a0",
-        "focalPoint": {
-          "x": 0.5,
-          "y": 0.5
-        },
-        "maxWidth": "606",
-        "alt": "w47upd1-promo-attack-dayz4-da-dk.jpg"
-      },
-      "imageAltText": "",
-      "_alias": "promotionWidget"
-    },
-    {
-      "link": "#",
-      "position": 3,
-      "type": "1x1",
-      "image": {
-        "aspectRatio": "606:863",
-        "imageUrl": "https://images.veromoda.com/media/mk4eb43y/w46_bw_jackets-2-da-dk.jpg?v=6ca21499-92f5-4d2e-86bb-cafd282b2c51",
-        "focalPoint": {
-          "x": 0.5,
-          "y": 0.5
-        },
-        "maxWidth": "606",
-        "alt": "w47upd1-promo-saleouter-dayz4-da-dk.jpg"
-      },
-      "imageAltText": "",
-      "_alias": "promotionWidget"
     }
   ]
 }

@@ -21,12 +21,11 @@
 
 <script setup lang="ts">
   import { ref } from 'vue'
-  import type { Category } from '../composables/useCategory'
+  import type { Category } from '~/types/Category.d'
 
   const props = withDefaults(defineProps<{ category: Category }>(), {
     category: () => ({
       id: '',
-      parent_category_id: '',
       level: 0,
       name: {
         en: '',

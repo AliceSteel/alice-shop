@@ -13,23 +13,28 @@
       :key="category.id"
       class="relative -left-full bg-lime-400 bg-opacity-0 rounded-3xl h-max backdrop-blur-sm p-4 transition-all duration-300 ease-in"
       :class="{ 'left-0 bg-opacity-40': isMenuOpen }"
-      
     >
       <CategoryItem :category="category" />
     </div>
-
-    
-     
   </nav>
 </template>
 
 <script setup lang="ts">
+  import type { Category } from '~/types/Category.d'
+
   const isMenuOpen = ref<boolean>(false)
-  const categories = ref(useCategory())
+  const categories = ref<Category[]>([])
 
   const toggleMenu = () => {
     isMenuOpen.value = !isMenuOpen.value
   }
+
+  onMounted(async () => {
+    try {
+      const fetchedCategories = await useCategory()
+      categories.value = fetchedCategories as Category[]
+    } catch (err) {
+      console.error('Error initializing categories from AppHeader:', err)
+    }
+  })
 </script>
-
-

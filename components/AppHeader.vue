@@ -11,8 +11,9 @@
       <h2 class="text-2xl font-semibold">alice-shop</h2>
     </nuxt-link>
 
+    <user-card />
     <nuxt-link
-      to="/"
+      to="/basket"
       title="Cart"
       class="h-full flex items-center gap-4 bg-transparent pl-4 backdrop-blur-sm"
     >

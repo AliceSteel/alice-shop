@@ -13,9 +13,9 @@
   const route = useRoute()
 
   const category = computed(() => route.params.categorySlug as string)
-
+  console.log('Category:', category.value)
   const products = await useCategoryForProducts(category?.value as string)
-
+  console.log('Products:', products)
   useHead({
     title: `Alice Shop - ${category.value}`.toLocaleUpperCase()
   })
