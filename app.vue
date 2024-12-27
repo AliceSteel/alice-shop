@@ -20,20 +20,24 @@
 <script setup lang="ts">
   import { useConfigStore } from '~/stores/configStore'
 
+  const configStore = useConfigStore()
+  const { init } = configStore
+
+  init()
   //client-side error handling:
   const reset = async (clearError: () => void) => {
     await navigateTo('/')
     clearError()
   }
-  const configStore = useConfigStore()
-
-  onMounted(() => {
-    configStore.init()
-  })
 </script>
 
 <style>
-  .router-link-active {
-  color: red;
+  .layout-enter-active,
+.layout-leave-active {
+  transition: all 0.4s;
+}
+.layout-enter-from,
+.layout-leave-to {
+  filter: grayscale(1);
 }
 </style>

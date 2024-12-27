@@ -1,5 +1,6 @@
 <template>
-  <div class="flex flex-col items-start gap-4 pt-10" v-if="product">
+  <div v-if="status === 'pending'"></div>
+  <div class="flex flex-col items-start gap-4 pt-10" v-else-if="product">
     <h1 class="text-center">Product Page</h1>
     <h4>{{ product.name.en }}</h4>
     <p>Brand: {{ product.brand }}</p>
@@ -18,8 +19,13 @@
 
   const route = useRoute()
   const productSlug = computed(() => route.params.productSlug as string)
-
-  const product: Product = await useProduct(productSlug.value)
+  const { data, error, status } = await useFetch(
+    `/api/categories/products/${productSlug.value}`
+  )
+  if (error.value) {
+    console.error('Error fetching product:', error.value)
+  }
+  const product = data.value as Product
 
   useHead({
     title: `Alice Shop - ${productSlug.value}`.toLocaleUpperCase()

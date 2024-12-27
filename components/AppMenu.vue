@@ -29,12 +29,12 @@
     isMenuOpen.value = !isMenuOpen.value
   }
 
-  onMounted(async () => {
-    try {
-      const fetchedCategories = await useCategory()
-      categories.value = fetchedCategories as Category[]
-    } catch (err) {
-      console.error('Error initializing categories from AppHeader:', err)
-    }
-  })
+  const { data, error } = await useFetch('/api/categoryMeta')
+  if (error.value) {
+    throw createError({
+      ...error.value,
+      statusMessage: 'Could not fetch categories'
+    })
+  }
+  categories.value = data.value as Category[]
 </script>

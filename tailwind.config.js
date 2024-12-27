@@ -8,9 +8,11 @@ module.exports = {
     'nuxt.config.js'
   ],
   theme: {
-    extend: {},
-    fontFamily: {
-      sans: ['"Raleway"', 'sans-serif']
+    extend: {
+      fontFamily: {
+        /*  sans: ['"Raleway"', 'sans-serif'] */
+        sans: ['Raleway']
+      }
     }
   }
 }

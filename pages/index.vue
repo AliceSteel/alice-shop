@@ -4,3 +4,10 @@
     <p>Please choose your category</p>
   </div>
 </template>
+
+<script setup lang="ts">
+  /*  const token = '123'
+
+  const tokenCookie = useCookie('token')
+  tokenCookie.value = token */
+</script>

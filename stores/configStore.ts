@@ -1,17 +1,21 @@
 import { defineStore } from 'pinia'
+import type { User } from '~/types/User.d'
 
 export const useConfigStore = defineStore('configStore', {
-  // arrow function recommended for full type inference
   state: () => ({
     productsAvailable: [] as string[],
     categories: [] as string[],
     user: {
-      /* name: 'Alice',
-      email: 'test@test.com' */
-    }
+      name: '',
+      email: ''
+    } as User | null | undefined
   }),
   actions: {
     async init() {
+      const userCookie = useCookie<User>('user')
+      if (userCookie.value) {
+        this.user = userCookie.value
+      }
       try {
         const { data, error } = await useFetch('/api/names')
         if (error.value) {

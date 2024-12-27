@@ -5,7 +5,7 @@ export default defineEventHandler((event: H3Event) => {
   const { productSlug } = event?.context?.params as {
     productSlug: string | number
   }
-
+  console.log('productSlug:', productSlug)
   if (productSlug) {
     const product = DATA.products.find(
       (product) => product.id === Number(productSlug)

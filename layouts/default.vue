@@ -1,9 +1,16 @@
 <template>
-    <AppHeader />
-    <div class="p-8 w-full min-h-screen bg-lime-200 text-lg flex gap-8">
-        <AppMenu />
-        <div class="w-4/5 mx-auto">
-            <slot />
-        </div>
+  <AppHeader />
+  <div class="p-8 w-full min-h-screen text-lg flex gap-8" :class="bgClassTheme">
+    <AppMenu />
+    <div class="w-4/5 mx-auto">
+      <slot />
     </div>
+  </div>
 </template>
+
+<script setup lang="ts">
+  const appConfig = useAppConfig()
+  const bgClassTheme = computed(
+    () => appConfig.theme.bgClass || appConfig.theme.default
+  )
+</script>

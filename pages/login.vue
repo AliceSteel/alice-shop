@@ -1,23 +1,35 @@
 <template>
-  I am login page
-  <button @click="login">login</button>
+  <div>
+    I am login page
+    <button class="p-10 bg-red-600" @click="login">login</button>
+  </div>
 </template>
 
 <script setup lang="ts">
   import { useConfigStore } from '~/stores/configStore'
-  import { storeToRefs } from 'pinia'
+  import { isAuthenticated } from '~/server/utils/isAuthenticated'
+  import type { User } from '~/types/User.d'
 
-  const { query } = useRoute()
-  const configStore = useConfigStore()
-  const { user } = storeToRefs(configStore)
+  const route = useRoute()
+  // const configStore = useConfigStore()
+  //const { user } = storeToRefs(configStore)
+  const user = useCookie<User>('user')
+  const token = useCookie('token')
 
   const login = async () => {
-    user.value = {
-      name: 'Alice',
-      email: 'loggedIn'
+    if (!token.value) {
+      throw createError({ statusCode: 401, message: 'Unauthorized' })
     }
-    const redirectTo = query.redirectTo
-    console.log(redirectTo)
-    navigateTo(redirectTo as string, { replace: true })
+
+    const { data, error } = await useFetch('/api/user', {
+      query: { userToken: token.value }
+    })
+    if (error.value) {
+      throw createError(error.value)
+    }
+    user.value = data.value
+    if (route.query.redirect && isAuthenticated()) {
+      navigateTo(route.query.redirect as string, { replace: true })
+    }
   }
 </script>

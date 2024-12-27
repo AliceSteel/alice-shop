@@ -1,7 +1,10 @@
+import { isAuthenticated } from '~/server/utils/isAuthenticated'
+
 export default defineNuxtRouteMiddleware((to, from) => {
-  const user = useConfigStore().user
-  if (!user?.name && to.path == '/basket') {
-    return navigateTo('/login?redirectTo=${to.path}')
+  const authStatus = isAuthenticated()
+  console.log('authStatus from auth_', authStatus)
+  if (!authStatus) {
+    console.log('started navigating')
+    return navigateTo('/login?redirect=' + to.path)
   }
-  return
 })

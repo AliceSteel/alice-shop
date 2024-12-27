@@ -2,6 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
+/* @layer base {
   @import url('https://fonts.googleapis.com/css2?family=Karla:wght@500&family=Raleway:wght@300&display=swap');
-}
+} */
