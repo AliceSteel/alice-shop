@@ -4,13 +4,10 @@
   >
     <nuxt-link
       to="/"
-      class="mr-auto h-full flex items-center gap-4 bg-transparent pr-4 backdrop-blur-sm"
-      title="Homepage"
+      class="mr-auto h-full rounded-lg overflow-hidden drop-shadow-xl hover:drop-shadow-2xl outline-double outline-black"
+      title="Home"
     >
-      <img src="../public/logo1.png" alt="logo" class="h-full" />
-      <h2 class="text-2xl font-semibold">
-        {{ random }}
-      </h2>
+      <img src="~/assets/logo1.png" alt="logo" class="h-full" />
     </nuxt-link>
 
     <select
@@ -47,10 +44,6 @@
 </template>
 
 <script setup lang="ts">
-  const randomNum = useState<number>('randomNum', () => Math.random())
-
-  const random: number = randomNum.value * 100
-
   const appConfig = useAppConfig()
   const options = [
     { name: 'Transparent', value: 'bg-transparent' },

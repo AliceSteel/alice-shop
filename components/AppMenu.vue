@@ -10,7 +10,7 @@
     </button>
     <div
       v-for="category in categories"
-      :key="category.id"
+      :key="category.name"
       class="relative -left-full bg-lime-400 bg-opacity-0 rounded-3xl h-max backdrop-blur-sm p-4 transition-all duration-300 ease-in"
       :class="{ 'left-0 bg-opacity-40': isMenuOpen }"
     >

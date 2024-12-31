@@ -6,16 +6,24 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss',
     '@vueuse/nuxt',
     '@pinia/nuxt',
-    '@nuxt/fonts'
+    '@nuxt/fonts',
+    'nuxt-graphql-client'
   ],
   css: ['~/assets/tailwind.css'],
-  runtimeConfig: {
-    /* database keys, env keys etc */
-  },
   app: {
     pageTransition: {
-      name: 'fade', // or 'fade'
-      mode: 'out-in' // or 'in-out'
+      name: 'fade',
+      mode: 'out-in'
+    }
+  },
+  /*  plugins: ['~/plugins/shopifyServerClient.server.js'], */
+  runtimeConfig: {
+    public: {
+      SHOPIFY_DOMAIN: process.env.SHOPIFY_DOMAIN,
+      SHOPIFY_STOREFRONT_ACCESS_TOKEN:
+        process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN,
+      SHOPIFY_STOREFRONT_PRIVATE_ACCESS_TOKEN:
+        process.env.SHOPIFY_STOREFRONT_PRIVATE_ACCESS_TOKEN
     }
   }
 })

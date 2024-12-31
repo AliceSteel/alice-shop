@@ -1,11 +1,8 @@
 <template>
   <div>
     <div class="flex gap-1">
-      <nuxt-link
-        :to="`/categories/${category.name.en.toLowerCase().replace(/ /g, '-')}`"
-        class="underline"
-      >
-        {{ category.name.en }}
+      <nuxt-link :to="`/categories/${category.name}`" class="underline">
+        {{ category.name }}
       </nuxt-link>
       <div v-if="hasSubcategory" class="cursor-pointer" @click="toggle">
         {{ ' >' }}
@@ -25,14 +22,8 @@
 
   const props = withDefaults(defineProps<{ category: Category }>(), {
     category: () => ({
-      id: '',
-      level: 0,
-      name: {
-        en: '',
-        dk: ''
-      },
-      categories: [],
-      path: ''
+      name: '',
+      categories: []
     })
   })
 
