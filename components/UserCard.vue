@@ -1,12 +1,10 @@
 <template>
-  <div class="flex flex-col items-end gap-1 self-start">
-    <nuxt-link
-      :to="login"
-      @click="clickHandler"
-      class="flex items-center pt-0.5"
-    >
+  <div class="flex flex-col gap-1">
+    <nuxt-link :to="login" @click="clickHandler">
       <span v-if="user.name">{{ 'PIC' }}</span>
-      <span v-else class="material-icons-outlined text-2xl"> face</span>
+      <span v-else class="material-symbols-outlined text-4xl flex items-center"
+        >account_circle</span
+      >
     </nuxt-link>
     <div v-if="user.name && isOpen" class="w-full bg-orange-300 p-2 rounded-lg">
       <h4>{{ user.name }}</h4>
@@ -29,7 +27,11 @@
 </script>
 
 <style>
-  span {
-  font-family: 'Material Icons';
+  .material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 100,
+  'GRAD' 0,
+  'opsz' 36
 }
 </style>

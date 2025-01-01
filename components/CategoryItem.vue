@@ -9,7 +9,7 @@
       </div>
     </div>
     <div v-if="isOpen" class="ml-4">
-      <div v-for="subCategory in category.categories" :key="subCategory.id">
+      <div v-for="subCategory in category.categories" :key="subCategory.name">
         <CategoryItem :category="subCategory" />
       </div>
     </div>

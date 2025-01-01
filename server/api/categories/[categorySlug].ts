@@ -15,6 +15,8 @@ export default defineEventHandler(async (event: H3Event) => {
             node {
               id
               description
+              title
+              handle
             }
           }
         }
@@ -35,7 +37,6 @@ export default defineEventHandler(async (event: H3Event) => {
     }
 
     const collections = data.collection.products.edges
-    console.log('collections:', collections)
     if (!collections) {
       throw createError({
         statusCode: 404,

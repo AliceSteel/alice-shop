@@ -16,16 +16,6 @@ export const useConfigStore = defineStore('configStore', {
       if (userCookie.value) {
         this.user = userCookie.value
       }
-      try {
-        const { data, error } = await useFetch('/api/names')
-        if (error.value) {
-          console.error('Error fetching product names:', error.value)
-        } else {
-          this.productsAvailable = data.value as string[]
-        }
-      } catch (err) {
-        console.error('Error initializing config store:', err)
-      }
     }
   }
 })
