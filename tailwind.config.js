@@ -12,6 +12,11 @@ module.exports = {
       fontFamily: {
         /*  sans: ['"Raleway"', 'sans-serif'] */
         sans: ['Raleway']
+      },
+      colors: {
+        khaki: '#878145',
+        'baby-blue': '#7FC4C1',
+        'neon-green': '#96ff00'
       }
     }
   }
