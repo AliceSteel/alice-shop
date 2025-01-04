@@ -1,10 +1,14 @@
 <template>
-  <div class="w-full flex flex-col items-center gap-4">
+  <div class="w-4/5 mx-auto flex flex-col items-center gap-4">
     <h4>Category {{ category }}</h4>
-    <div class="flex flex-wrap gap-2">
-      <div v-for="(product, key) in products" :key="key">
-        <ProductCard :item="product.node" />
-      </div>
+    <div
+      class="w-full grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-2"
+    >
+      <ProductCard
+        v-for="(product, key) in products"
+        :key="key"
+        :item="product.node"
+      />
     </div>
   </div>
 </template>

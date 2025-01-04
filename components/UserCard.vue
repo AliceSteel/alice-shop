@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col gap-1">
+  <div class="flex flex-col gap-1 backdrop-blur-sm rounded-full">
     <nuxt-link :to="login" @click="clickHandler">
       <span v-if="user.name">{{ 'PIC' }}</span>
       <span v-else class="material-symbols-outlined text-4xl flex items-center"

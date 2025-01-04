@@ -1,15 +1,18 @@
 <template>
   <header
-    class="w-full px-9 py-1 h-11 fixed top-0 left-0 z-20 flex justify-end items-center text-black gap-10 transition-all duration-500 ease-in-out"
-    :class="{ 'gap-4': isScrolled }"
+    class="w-full px-9 py-1 h-11 fixed top-0 left-0 z-20 flex justify-end items-center gap-4 sm:gap-12 text-black transition-all duration-500 ease-in-out"
+    :class="{ 'gap-1 sm:gap-4': isScrolled }"
   >
     <nuxt-link
       to="/"
-      class="text-xl h-full font-semibold tracking-wider flex items-center mr-auto w-96 rounded-lg overflow-hidden transition-all duration-500 ease-in-out backdrop-blur-sm"
+      class="mr-auto text-xl h-full font-semibold tracking-wider flex items-center rounded-lg overflow-hidden transition-all duration-500 ease-in-out backdrop-blur-sm"
       title="Home"
       ><div
         class="overflow-hidden transition-all ease-in duration-500 delay-300"
-        :class="[{ 'w-20 delay-0': !isScrolled }, { 'w-4 ': isScrolled }]"
+        :class="[
+          { 'w-20 delay-0': !isScrolled },
+          { 'w-3.5 font-bold': isScrolled }
+        ]"
       >
         ALICE
       </div>
@@ -45,8 +48,10 @@
       </option>
     </select>
     <user-card />
-    <nuxt-link to="/basket" title="Cart" class="backdrop-blur-sm h-full -mt-2">
-      <span class="material-symbols-outlined text-4xl">shopping_bag</span>
+    <nuxt-link to="/basket" title="Cart" class="h-full -mt-2">
+      <span class="material-symbols-outlined text-4xl backdrop-blur-sm"
+        >shopping_bag</span
+      >
     </nuxt-link>
   </header>
 </template>
@@ -62,7 +67,6 @@
   const onSelected = () => {
     appConfig.theme.bgClass = newBgTheme.value
   }
-  const isHovered = ref<boolean>(false)
   const isScrolled = ref<boolean>(false)
 
   onMounted(() => {

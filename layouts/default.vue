@@ -1,13 +1,9 @@
 <template>
-  <AppHeader />
-  <div
-    class="mt-11 w-full min-h-screen text-lg flex gap-8"
-    :class="bgClassTheme"
-  >
+  <div class="mt-11 w-full min-h-screen text-lg" :class="bgClassTheme">
+    <AppHeader />
     <AppMenu />
-    <div class="w-4/5 mx-auto">
-      <slot />
-    </div>
+
+    <slot />
   </div>
 </template>
 

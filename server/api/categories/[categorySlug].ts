@@ -17,6 +17,17 @@ export default defineEventHandler(async (event: H3Event) => {
               description
               title
               handle
+              images(first: 1) {
+                edges {
+                  node {
+                    id
+                    url
+                    width
+                    height
+                    altText
+                  }
+                }
+              }
             }
           }
         }

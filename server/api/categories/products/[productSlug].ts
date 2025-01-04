@@ -7,8 +7,8 @@ export default defineEventHandler(async (event: H3Event) => {
   }
   const shopifyClient = getShopifyClient()
   const productQuery = `
-  query {
-    product(handle: "${productSlug}") {
+    query {
+      product(handle: "${productSlug}") {
         id
         title
         handle
@@ -31,10 +31,22 @@ export default defineEventHandler(async (event: H3Event) => {
             currencyCode
           }
         }
+        variants(first: 5) {
+          edges {
+            node {
+              id
+              title
+              availableForSale
+              price {
+                amount
+                currencyCode
+              }
+            }
+          }
+        }
+      }
     }
-  }
-
-`
+  `
   try {
     const { data, errors } = await shopifyClient.request(productQuery)
     if (errors) {
@@ -56,10 +68,10 @@ export default defineEventHandler(async (event: H3Event) => {
         message: 'Product not found from server-side'
       })
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error fetching product:', error)
     throw createError({
-      statusCode: 404,
+      ...error,
       statusMessage: 'Unknown error fetching product'
     })
   }
