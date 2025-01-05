@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
-/* @layer base {
-  @import url('https://fonts.googleapis.com/css2?family=Karla:wght@500&family=Raleway:wght@300&display=swap');
-} */
+h1 {
+  @apply text-6xl font-semibold;
+  font-family: 'Karla', sans-serif;
+}
+h2 {
+  @apply text-4xl font-semibold;
+}
+span {
+  font-family: 'Material Symbols Outlined';
+  font-weight: 200;
+}

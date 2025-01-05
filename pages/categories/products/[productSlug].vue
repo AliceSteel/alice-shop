@@ -12,10 +12,10 @@
       <div
         class="flex-1 basis-72 flex flex-col items-start bg-white px-10 py-20 gap-5"
       >
-        <h1 class="text-6xl font-semibold">{{ product.title }}</h1>
+        <h1>{{ product.title }}</h1>
         <p>{{ product.description }}</p>
 
-        <p v-if="!variants.length">
+        <p v-if="variants.length < 2">
           Price: {{ price?.currencyCode }} {{ price?.amount }}
         </p>
         <div v-else v-for="(variant, key) in variants" :key="key">
@@ -26,7 +26,8 @@
               :class="bgRadioColor"
             >
               done_outline </span
-            >{{ variant.title }}
+            >{{ variant.title }} : {{ variant.price?.currencyCode }}
+            {{ variant.price?.amount }}
           </label>
         </div>
       </div>
@@ -64,6 +65,7 @@
   const variants = computed<Variant[]>(
     () => product.value?.variants?.edges.map((edge: any) => edge.node) || []
   )
+
   const appConfig = useAppConfig()
   const bgRadioColor = computed(
     () => appConfig.theme.bgClass || appConfig.theme.default

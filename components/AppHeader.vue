@@ -77,10 +77,6 @@
 </script>
 
 <style>
-  span {
-  font-family: 'Material Symbols Outlined';
-  font-weight: 200;
-}
   .material-symbols-outlined {
   font-variation-settings:
   'FILL' 0,

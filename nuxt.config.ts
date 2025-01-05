@@ -16,7 +16,7 @@ export default defineNuxtConfig({
       mode: 'out-in'
     }
   },
-  /*  plugins: ['~/plugins/shopifyServerClient.server.js'], */
+  plugins: ['~/plugins/gsap.js'],
   runtimeConfig: {
     public: {
       SHOPIFY_DOMAIN: process.env.SHOPIFY_DOMAIN,
@@ -25,5 +25,8 @@ export default defineNuxtConfig({
       SHOPIFY_STOREFRONT_PRIVATE_ACCESS_TOKEN:
         process.env.SHOPIFY_STOREFRONT_PRIVATE_ACCESS_TOKEN
     }
+  },
+  build: {
+    transpile: ['gsap']
   }
 })
