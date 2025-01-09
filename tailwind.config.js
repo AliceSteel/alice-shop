@@ -11,7 +11,7 @@ module.exports = {
     extend: {
       fontFamily: {
         /*  sans: ['"Raleway"', 'sans-serif'] */
-        sans: ['Raleway']
+        sans: ['Titillium Web', 'sans-serif']
       },
       colors: {
         khaki: '#7D750A',
@@ -20,7 +20,8 @@ module.exports = {
         'alice-orange': '#D35525',
         'alice-red': '#CC3B14',
         'alice-yellow': '#E3D126',
-        'alice-green': '#7F8703'
+        'alice-green': '#7F8703',
+        'alice-pink': '#FFAB91'
       }
     }
   }
