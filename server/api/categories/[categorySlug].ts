@@ -1,5 +1,5 @@
 import { defineEventHandler, type H3Event } from 'h3'
-import { getShopifyClient } from '../../utils/getShopifyClient'
+import { getShopifyClient } from '~/utils/getShopifyClient'
 
 export default defineEventHandler(async (event: H3Event) => {
   const shopifyClient = getShopifyClient()

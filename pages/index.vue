@@ -1,17 +1,25 @@
 <template>
-  <div>
+  <div class="w-full overflow-x-hidden">
     <section class="min-h-[50vh] flex items-center justify-center">
       <h1>Let's make walls less boring!</h1>
     </section>
     <div class="pinContainer">
       <section class="comparisonSection">
         <div class="comparisonImage beforeImage">
+          <div
+            class="absolute top-0 z-10 w-full h-full flex items-center justify-center"
+          >
+            <span class="material-icons-outlined text-9xl">
+              add_photo_alternate
+            </span>
+          </div>
+
           <img
             src="../assets/elizabeth-french-km-UXgVKWZI-unsplash.jpg"
             alt="before"
           />
         </div>
-        <div class="comparisonImage afterImage">
+        <div class="comparisonImage afterImage z-20">
           <img
             src="../assets/elizabeth-french-km-UXgVKWZI-unsplash.jpg"
             alt="after"
@@ -44,9 +52,9 @@
 
 <script setup lang="ts">
   const { $gsap } = useNuxtApp() as any
-
+  let tl: GSAPTimeline
   onMounted(() => {
-    const tl = $gsap.timeline({
+    tl = $gsap.timeline({
       scrollTrigger: {
         trigger: '.pinContainer',
         start: 'top top',
@@ -73,6 +81,10 @@
       0.5
     )
   })
+  onUnmounted(() => {
+    tl.scrollTrigger?.kill()
+    tl.kill()
+  })
   /*  const token = '123'
 
   const tokenCookie = useCookie('token')
@@ -80,10 +92,7 @@
 </script>
 
 <style scoped>
-  body {
-  overflow-x: hidden;
-}
-.pinContainer {
+  .pinContainer {
   height: 100vh;
   position: relative;
 }
@@ -100,7 +109,7 @@
   height: 100%;
 }
 .beforeImage img {
-  filter: blur(15px);
+  filter: blur(8px);
   width: 100%;
   height: 100%;
   position: absolute;

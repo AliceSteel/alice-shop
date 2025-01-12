@@ -1,54 +1,16 @@
 import { defineEventHandler, type H3Event } from 'h3'
-import { getShopifyClient } from '../../../utils/getShopifyClient'
+import { getShopifyClient } from '~/utils/getShopifyClient'
+import { productQuery } from '~/queries/productQuery'
 
 export default defineEventHandler(async (event: H3Event) => {
   const { productSlug } = event?.context?.params as {
-    productSlug: string | number
+    productSlug: string
   }
   const shopifyClient = getShopifyClient()
-  const productQuery = `
-    query {
-      product(handle: "${productSlug}") {
-        id
-        title
-        handle
-        description
-        images(first: 5) {
-          edges {
-            node {
-              url
-              altText
-            }
-          }
-        }
-        priceRange {
-          minVariantPrice {
-            amount
-            currencyCode
-          }
-          maxVariantPrice {
-            amount
-            currencyCode
-          }
-        }
-        variants(first: 5) {
-          edges {
-            node {
-              id
-              title
-              availableForSale
-              price {
-                amount
-                currencyCode
-              }
-            }
-          }
-        }
-      }
-    }
-  `
+  const productQ = productQuery(productSlug)
+
   try {
-    const { data, errors } = await shopifyClient.request(productQuery)
+    const { data, errors } = await shopifyClient.request(productQ)
     if (errors) {
       console.error('Error fetching product: ', errors)
       throw createError({

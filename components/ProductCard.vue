@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex flex-col items-start gap-4 border-2 rounded-xl border-alice-orange p-4 min-h-72 h-full justify-start bg-white"
+    class="flex flex-col items-start gap-4 border-2 rounded-xl border-alice-orange p-4 min-h-72 h-full justify-start bg-white text-black"
   >
     <img
       :src="image.url"

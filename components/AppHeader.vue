@@ -28,7 +28,7 @@
       name="theme"
       v-model="newBgTheme"
       @change="onSelected"
-      class="bg-transparent backdrop-blur-sm text-black border-[0.2px] border-gray-900 rounded-3xl py-0.5 px-3 mx-1 w-8 hover:w-28 hover:cursor-pointer transition-all duration-500 ease-in-out"
+      class="bg-transparent backdrop-blur-sm text-black border-[0.2px] border-gray-900 rounded-3xl max-h-8 px-3 mx-1 w-8 hover:w-28 hover:cursor-pointer transition-all duration-500 ease-in-out"
     >
       <option
         value=""
@@ -47,8 +47,8 @@
         {{ option.name }}
       </option>
     </select>
-    <user-card />
-    <nuxt-link to="/basket" title="Cart" class="h-full -mt-2">
+    <user-card class="pointer-events-none" />
+    <nuxt-link to="#" title="not implemented yet" class="h-full -mt-2">
       <span class="material-symbols-outlined text-4xl backdrop-blur-sm"
         >shopping_bag</span
       >
@@ -60,7 +60,8 @@
   const appConfig = useAppConfig()
   const options = [
     { name: 'transparent', value: 'bg-transparent' },
-    { name: 'Blue', value: 'bg-blue-500 text-alice-pink' }
+    { name: 'Blue', value: 'bg-blue-500 text-alice-pink' },
+    { name: 'Khaki', value: 'bg-khaki text-neon-green' }
   ]
   const newBgTheme = ref<string>('')
 

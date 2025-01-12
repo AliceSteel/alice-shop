@@ -1,4 +1,4 @@
-import { isAuthenticated } from '~/server/utils/isAuthenticated'
+import { isAuthenticated } from '~/utils/isAuthenticated'
 
 export default defineNuxtRouteMiddleware((to, from) => {
   const authStatus = isAuthenticated()

@@ -7,7 +7,7 @@
 
 <script setup lang="ts">
   import { useConfigStore } from '~/stores/configStore'
-  import { isAuthenticated } from '~/server/utils/isAuthenticated'
+  import { isAuthenticated } from '~/utils/isAuthenticated'
   import type { User } from '~/types/User.d'
 
   const route = useRoute()

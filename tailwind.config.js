@@ -10,11 +10,10 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        /*  sans: ['"Raleway"', 'sans-serif'] */
         sans: ['Titillium Web', 'sans-serif']
       },
       colors: {
-        khaki: '#7D750A',
+        khaki: '#878145',
         'baby-blue': '#7FC4C1',
         'neon-green': '#96ff00',
         'alice-orange': '#D35525',
