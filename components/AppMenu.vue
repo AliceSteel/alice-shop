@@ -1,8 +1,11 @@
 <template>
   <div>
     <div
-      v-show="isMenuOpen"
-      class="transition-opacity ease-in-out fixed z-10 left-0 top-0 w-screen h-screen bg-black bg-opacity-40 backdrop-blur-sm"
+      class="transition-opacity duration-300 ease-in-out fixed z-10 left-0 top-0 w-screen h-screen bg-black pointer-events-none"
+      :class="[
+        { 'bg-opacity-30 backdrop-blur-sm': isMenuOpen },
+        { 'opacity-0': !isMenuOpen }
+      ]"
     ></div>
     <nav
       class="fixed z-20 top-11 left-0 flex flex-col gap-2 items-start justify-start pl-9 pr-1 pt-1.5 uppercase bg-white bg-opacity-40 backgrop-blur-sm transition-all duration-300 ease-in drop-shadow-xl"

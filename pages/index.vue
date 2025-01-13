@@ -1,11 +1,13 @@
 <template>
   <div class="w-full overflow-x-hidden">
-    <section class="min-h-[50vh] flex items-center justify-center">
+    <section class="min-h-[50vh] flex items-center justify-center px-9">
       <h1>Let's make walls less boring!</h1>
     </section>
     <div class="pinContainer">
-      <section class="comparisonSection">
-        <div class="comparisonImage beforeImage">
+      <section
+        class="comparisonSection absolute w-full sm:w-1/2 h-[60vh] aspect-square top-0 left-0 sm:right-0 sm:left-auto"
+      >
+        <div class="comparisonImage beforeImage w-full h-full">
           <div
             class="absolute top-0 z-10 w-full h-full flex items-center justify-center"
           >
@@ -17,17 +19,19 @@
           <img
             src="../assets/elizabeth-french-km-UXgVKWZI-unsplash.jpg"
             alt="before"
+            class="object-cover"
           />
         </div>
-        <div class="comparisonImage afterImage z-20">
+        <div class="comparisonImage afterImage z-20 w-full h-full">
           <img
             src="../assets/elizabeth-french-km-UXgVKWZI-unsplash.jpg"
             alt="after"
+            class="object-cover w-full h-full absolute top-0"
           />
         </div>
       </section>
       <section
-        class="about-us w-[50vw] mr-auto animated-lines flex flex-col gap-5"
+        class="about-us relative z-20 backdrop-blur-sm w-full sm:w-1/2 mr-auto animated-lines flex flex-col gap-5"
       >
         <h2 class="line">About Us</h2>
         <p class="line">
@@ -51,6 +55,9 @@
 </template>
 
 <script setup lang="ts">
+  const appConfig = useAppConfig()
+  const bgColor = appConfig.theme.bgClass || appConfig.theme.default
+
   const { $gsap } = useNuxtApp() as any
   let tl: GSAPTimeline
   onMounted(() => {
@@ -72,7 +79,7 @@
       0
     )
 
-    tl.fromTo('.about-us', { yPercent: 100 }, { yPercent: 50 }, 0.5)
+    tl.fromTo('.about-us', { yPercent: 100 }, { yPercent: 10 }, 0.5)
 
     tl.fromTo(
       '.line',
@@ -97,23 +104,12 @@
   position: relative;
 }
 
-.comparisonSection {
-  width: 50%;
-  position: absolute;
-  right:0;
-  top:0;
-  padding-bottom: 56.25%;
-}
-.comparisonImage {
-  width: 100%;
-  height: 100%;
-}
 .beforeImage img {
   filter: blur(8px);
-  width: 100%;
+ /*  width: 100%;
   height: 100%;
   position: absolute;
-  top: 0;
+  top: 0; */
 }
 .afterImage {
   position: absolute;
