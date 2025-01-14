@@ -3,14 +3,10 @@
     class="w-full scroller h-screen overflow-y-auto overflow-x-hidden -mt-11"
     v-if="product"
   >
-    <section
-      class="white flex h-[10vh] justify-center items-center bg-white text-black"
-    >
-      <h1>{{ product.title }}</h1>
-    </section>
-
-    <section class="gsap-wrap h-full flex w-full">
-      <div class="p-wrap flex-1 relative h-[80vh] w-full sm:w-1/2 m-20">
+    <section class="gsap-wrap h-screen flex flex-wrap sm:flex-nowrap w-full">
+      <div
+        class="p-wrap flex-1 relative h-[80vh] w-full min-w-60 sm:w-1/2 sm:m-10"
+      >
         <div
           v-for="(image, key) in images"
           :key="key"
@@ -20,8 +16,9 @@
       </div>
 
       <div
-        class="flex-1 flex flex-col items-start justify-center bg-white px-10 py-20 gap-5 text-black w-full sm:w-1/2"
+        class="flex-1 w-full sm:w-1/2 flex flex-col items-start justify-center bg-white px-10 py-20 gap-5 text-black uppercase"
       >
+        <h1>{{ product.title }}</h1>
         <p>{{ product.description }}</p>
 
         <p v-if="variants.length < 2">
@@ -41,7 +38,7 @@
               v-model="variantSelected"
             />
             <span
-              class="material-symbols-outlined absolute top-0 left-0 w-10 h-10 flex items-center justify-center text-4xl rounded-full text-white !bg-alice-pink"
+              class="material-symbols-outlined absolute top-0 left-0 w-10 h-10 flex items-center justify-center text-4xl rounded-full text-white bg-alice-orange"
             >
               done_outline
             </span>
@@ -52,7 +49,7 @@
         <button
           @click="handlePayment"
           :disabled="isLoading"
-          class="bg-alice-pink text-black p-2 rounded-xl w-inherit text-center cursor-pointer"
+          class="bg-alice-orange text-white p-2 rounded-xl w-inherit text-center cursor-pointer w-full uppercase"
         >
           {{
             isLoading
@@ -143,7 +140,6 @@
       const checkoutUrlQ = checkoutUrlQuery(cartId)
       const { data: checkoutData, errors: checkoutErrors } =
         await shopifyClient.request(checkoutUrlQ)
-      console.log('checkoutData', checkoutData)
       if (checkoutErrors) {
         console.error('Error fetching checkoutUrl: ', errors)
         throw createError({
