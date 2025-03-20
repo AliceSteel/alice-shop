@@ -5,7 +5,7 @@
     </section>
     <div class="pinContainer">
       <section
-        class="comparisonSection absolute w-full sm:w-1/2 h-[60vh] aspect-square top-0 left-0 sm:right-0 sm:left-auto"
+        class="comparisonSection absolute w-full sm:w-1/2 h-[60vh] aspect-square top-[10%] left-0 sm:right-0 sm:left-auto"
       >
         <div class="comparisonImage beforeImage w-full h-full">
           <div
@@ -31,7 +31,7 @@
         </div>
       </section>
       <section
-        class="about-us relative z-20 backdrop-blur-sm w-full sm:w-1/2 mr-auto animated-lines flex flex-col gap-5"
+        class="about-us relative top-0 z-20 backdrop-blur-sm w-full sm:w-1/2 mr-auto animated-lines flex flex-col gap-5"
       >
         <h2 class="line">About Us</h2>
         <p class="line">
@@ -45,7 +45,7 @@
           timeless vintage designs, our handpicked selection offers something
           for every taste and space.
         </p>
-        <p class="line">
+        <p class="line hidden sm:block">
           Let our posters bring inspiration, individuality, and a splash of
           global flair to your everyday surroundings.
         </p>

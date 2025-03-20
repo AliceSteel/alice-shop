@@ -10,7 +10,11 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Titillium Web', 'sans-serif']
+        sans: ['Oswald', 'sans-serif']
+      },
+      fontWeight: {
+        normal: '300',
+        semibold: '500'
       },
       colors: {
         khaki: '#878145',

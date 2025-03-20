@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="uppercase">
     <div
       class="transition-opacity duration-300 ease-in-out fixed z-10 left-0 top-0 w-screen h-screen bg-black pointer-events-none"
       :class="[

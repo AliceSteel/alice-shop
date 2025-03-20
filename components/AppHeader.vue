@@ -1,6 +1,6 @@
 <template>
   <header
-    class="w-full px-9 py-1 h-11 fixed top-0 left-0 z-20 flex justify-end items-center gap-4 sm:gap-12 text-black transition-all duration-500 ease-in-out"
+    class="w-full px-9 py-1 h-11 fixed top-0 left-0 z-20 flex justify-end items-center gap-4 sm:gap-12 text-black transition-all duration-500 ease-in-out uppercase"
     :class="{ 'gap-1 sm:gap-4': isScrolled }"
   >
     <nuxt-link

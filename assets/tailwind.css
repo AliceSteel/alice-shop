@@ -3,7 +3,8 @@
 @tailwind utilities;
 
 h1 {
-  @apply text-7xl font-semibold;
+  @apply text-7xl;
+  text-transform: uppercase;
 }
 h2 {
   @apply text-4xl font-semibold;
@@ -11,4 +12,7 @@ h2 {
 span {
   font-family: 'Material Symbols Outlined';
   font-weight: 200;
+}
+body {
+  font-weight: 300;
 }
