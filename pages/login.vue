@@ -20,19 +20,16 @@ let refreshingPromise: Promise<void> | null = null
 
 
 onMounted(async () => {
-  getAccessToken().then((accessToken) => {
-    token.value = accessToken
-  })
+  // Attempt to get token from local storage or refresh if expired
+  token.value = await getAccessToken()
+
   if(!token.value){
+    console.log('code:', route.query.code)
+    console.log('state:', route.query.state)
   const code = route.query.code as string
-  const state = route.query.state as string
-  const storedState = localStorage.getItem('my-oauth-state')
   /**
    * Perform OAuth flow if code is present
    */
-  if (state !== storedState) {
-    console.error('State mismatch')
-  } else {
     const codeVerifier = localStorage.getItem('code-verifier')
     if (!codeVerifier) {
       console.error('Code verifier is missing')
@@ -56,13 +53,12 @@ onMounted(async () => {
 
     if (error.value) {
       console.error('Error obtaining access token:', error.value)
-    }   else if (!data.value) {
+    }  else if (!data.value) {
       console.error('No data returned.')
     } else {
       console.log('Access Token62:', data.value.access_token)
       console.log('Refresh Token63:', data.value.refresh_token)
       storeToken(data.value.access_token, data.value.refresh_token, data.value.expires_in)
-    }
     }
   } 
 }
@@ -177,6 +173,7 @@ async function fetchCustomerData() {
   }
 
   const result = await response.json()
+  console.log('Customer data:', result)
   // Example: store the customer email in a Pinia store
   const userStore = useConfigStore()
   if (userStore.user) {
