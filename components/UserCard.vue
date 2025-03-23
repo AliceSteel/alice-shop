@@ -18,16 +18,17 @@
 
 <script setup="ts">
     import { useConfigStore } from '~/stores/configStore'
-
     const configStore = useConfigStore()
+   
     const { user } = storeToRefs(configStore)
     const isOpen = ref(false)
+
     const clientId = useRuntimeConfig().public.CLIENT_ID
     const state = useState('state', () => generateRandomString())
     const nonce = useState('nonce', () => generateRandomString())
 
     const clickHandler = () => {
-    if (!user.value.name) {
+    if (!user.value) {
       console.log('Clicked, but User not logged in')
       // Not logged in yet, so redirect to Shopify login
       redirectToShopifyLogin()
@@ -54,7 +55,7 @@
     authorizationRequestUrl.searchParams.append('client_id', clientId)
     authorizationRequestUrl.searchParams.append('response_type', 'code')
 
-    const redirectUri = `${window.location.origin}/callback`
+    const redirectUri = `${window.location.origin}/login`
     console.log('Redirect URI:', redirectUri)
     authorizationRequestUrl.searchParams.append('redirect_uri', redirectUri)
     authorizationRequestUrl.searchParams.append('state', state.value)
@@ -74,7 +75,7 @@
     return base64UrlEncode(rando)
   }
 
-    async function generateCodeChallenge(codeVerifier) {
+  async function generateCodeChallenge(codeVerifier) {
     const digestOp = await crypto.subtle.digest(
       { name: 'SHA-256' },
       new TextEncoder().encode(codeVerifier)
@@ -107,6 +108,15 @@
     .replace(/\+/g, '-')
     .replace(/\//g, '_')
     .replace(/=+$/, '')
+}
+async function isUserLoggedIn() {
+  const accessToken = localStorage.getItem('access_token')
+  const expirationTime = parseInt(localStorage.getItem('access_token_expiration') || '0')
+
+  if (new Date().getTime() > expirationTime) {
+    return false // Token expired
+  } 
+  return true // Token valid 
 }
 </script>
 
