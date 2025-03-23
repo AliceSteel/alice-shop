@@ -23,7 +23,8 @@ export default defineNuxtConfig({
       SHOPIFY_STOREFRONT_ACCESS_TOKEN:
         process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN,
       SHOPIFY_STOREFRONT_PRIVATE_ACCESS_TOKEN:
-        process.env.SHOPIFY_STOREFRONT_PRIVATE_ACCESS_TOKEN
+        process.env.SHOPIFY_STOREFRONT_PRIVATE_ACCESS_TOKEN,
+      CLIENT_ID: process.env.CLIENT_ID
     }
   },
   build: {

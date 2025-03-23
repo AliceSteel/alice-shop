@@ -47,7 +47,7 @@
         {{ option.name }}
       </option>
     </select>
-    <user-card class="pointer-events-none" />
+    <user-card />
     <nuxt-link to="#" title="not implemented yet" class="h-full -mt-2">
       <span class="material-symbols-outlined text-4xl backdrop-blur-sm"
         >shopping_bag</span
