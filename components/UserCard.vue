@@ -28,13 +28,17 @@
 
     const clickHandler = () => {
     if (!user.value.name) {
+      console.log('Clicked, but User not logged in')
       // Not logged in yet, so redirect to Shopify login
       redirectToShopifyLogin()
     } else {
+      console.log('Clicked, User logged in')
       isOpen.value = !isOpen.value
     }
   }
   const redirectToShopifyLogin = async () => {
+    console.log('Redirecting to Shopify login fn started...')
+
     const verifier = await generateCodeVerifier()
     const challenge = await generateCodeChallenge(verifier)
     localStorage.setItem('code-verifier', verifier)
@@ -49,11 +53,16 @@
     )
     authorizationRequestUrl.searchParams.append('client_id', clientId)
     authorizationRequestUrl.searchParams.append('response_type', 'code')
-    authorizationRequestUrl.searchParams.append('redirect_uri', `https://alice-shop.vercel.app/`)
+
+    const redirectUri = `${window.location.origin}/callback`
+    console.log('Redirect URI:', redirectUri)
+    authorizationRequestUrl.searchParams.append('redirect_uri', redirectUri)
     authorizationRequestUrl.searchParams.append('state', state.value)
     authorizationRequestUrl.searchParams.append('nonce', nonce.value)
     authorizationRequestUrl.searchParams.append('code_challenge', challenge)
     authorizationRequestUrl.searchParams.append('code_challenge_method', 'S256')
+
+    console.log('Generated URL line65:', authorizationRequestUrl.toString())
 
     window.location.href = authorizationRequestUrl.toString()
   }
