@@ -28,12 +28,12 @@
     const nonce = useState('nonce', () => generateRandomString())
 
     const clickHandler = () => {
-    if (!user.value) {
+    if (!user.value.name) {
       console.log('Clicked, but User not logged in')
       // Not logged in yet, so redirect to Shopify login
       redirectToShopifyLogin()
     } else {
-      console.log('Clicked, User logged in')
+      console.log('user logged in:', user.value.name)
       isOpen.value = !isOpen.value
     }
   }
