@@ -13,7 +13,7 @@ import { onMounted , ref} from 'vue'
 const router = useRouter()
 const route = useRoute()
 const config = useRuntimeConfig()
-const configStore = useConfigStore()
+const userStore = useConfigStore()
 
 const clientId = config.public.CLIENT_ID
 const token = ref<string| null>(null)
@@ -35,23 +35,18 @@ onMounted(async () => {
     if (!codeVerifier) {
       console.error('Code verifier is missing')
     } else {
-      console.log('starting auth request 37: ')
-    const tokenRequestUrl = 'https://shopify.com/authentication/62268506202/oauth/token'
-    const tokenRequestBody = new URLSearchParams({
-      grant_type: 'authorization_code',
-      client_id: clientId as string,
-      code: code,
-      redirect_uri: `${window.location.origin}/login`,
-      code_verifier: codeVerifier
-    })
+    console.log('starting auth request 37: ')
 
-    const { data, error } = await useFetch<AccessTokenResponseType>(tokenRequestUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      body: tokenRequestBody.toString()
-    })
+    const { data, error } = await useFetch<AccessTokenResponseType>('/api/shopify/callback', {
+        method: 'POST',
+        body: {
+          grant_type: 'authorization_code',
+          client_id: clientId,
+          code,
+          redirect_uri: `${window.location.origin}/login`,
+          code_verifier: codeVerifier
+        }
+      })
 
     if (error.value) {
       console.error('Error obtaining access token:', error.value)
@@ -94,19 +89,13 @@ async function refreshAccessToken() {
       return
     }
 
-    const tokenRequestUrl = 'https://shopify.com/authentication/62268506202/oauth/token'
-    const tokenRequestBody = new URLSearchParams({
-      grant_type: 'refresh_token',
-      client_id: clientId,
-      refresh_token: refreshToken
-    })
-
-    const { data, error } = await useFetch<AccessTokenResponseType>(tokenRequestUrl, {
+    const { data, error } = await useFetch<AccessTokenResponseType>('/api/shopify/callback', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      body: tokenRequestBody.toString()
+      body: {
+        grant_type: 'refresh_token',
+        client_id: clientId,
+        refresh_token: refreshToken
+      }
     })
 
     if (error.value) {
@@ -181,7 +170,6 @@ async function fetchCustomerData() {
   const result = await response.json()
   console.log('Customer data:', result)
   // Example: store the customer email in a Pinia store
-  const userStore = useConfigStore()
   if (userStore.user) {
     userStore.user.email = result.data.customer.emailAddress.emailAddress
 
