@@ -13,11 +13,11 @@ import { onMounted , ref} from 'vue'
 const router = useRouter()
 const route = useRoute()
 const config = useRuntimeConfig()
+const configStore = useConfigStore()
 
 const clientId = config.public.CLIENT_ID
 const token = ref<string| null>(null)
 let refreshingPromise: Promise<void> | null = null
-
 
 onMounted(async () => {
   // Attempt to get token from local storage or refresh if expired
@@ -26,6 +26,7 @@ onMounted(async () => {
   if(!token.value){
     console.log('code:', route.query.code)
     console.log('state:', route.query.state)
+    localStorage.setItem('my-oauth-state', route.query.state as string)
   const code = route.query.code as string
   /**
    * Perform OAuth flow if code is present
@@ -34,6 +35,7 @@ onMounted(async () => {
     if (!codeVerifier) {
       console.error('Code verifier is missing')
     } else {
+      console.log('starting auth request 37: ')
     const tokenRequestUrl = 'https://shopify.com/authentication/62268506202/oauth/token'
     const tokenRequestBody = new URLSearchParams({
       grant_type: 'authorization_code',
@@ -63,13 +65,17 @@ onMounted(async () => {
   } 
 }
 
-  console.log('Access Token70:', token)
+  console.log('Access Token70:', token.value)
   console.log('Refresh Token71:', localStorage.getItem('refresh_token'))
   console.log('Expiration Time72:', localStorage.getItem('access_token_expiration'))
-  fetchCustomerData()
-  router.push('/') 
+  if(token.value){
+    fetchCustomerData()
+    router.push('/') // Redirect to home page after successful login
+  } else {
+    console.error('Failed to obtain access token73')
+  }
+  
 })
-
 
 /**
  * Refresh the access token when it’s expired
