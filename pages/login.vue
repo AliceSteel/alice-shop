@@ -55,6 +55,7 @@ onMounted(async () => {
     } else {
       console.log('Access Token62:', data.value.access_token)
       console.log('Refresh Token63:', data.value.refresh_token)
+      token.value = data.value.access_token
       storeToken(data.value.access_token, data.value.refresh_token, data.value.expires_in)
     }
   } 
