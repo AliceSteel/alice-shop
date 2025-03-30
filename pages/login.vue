@@ -176,22 +176,20 @@ async function fetchCustomerData() {
         },
         body: JSON.stringify({
           operationName: 'GetCustomerData',
-          query: 'query { customer { emailAddress { emailAddress }}}',
+          query: 'query { customer { emailAddress displayName }}',
           variables: {},
         }),
       }
     )
 
-    if (!response.ok) {
+    if (!response) {
       console.error('Failed to fetch customer data, status:', response)
       return
     }
-
-    const result = await response.json()
-    console.log('Customer data:', result)
-
-    if (userStore.user) {
-      userStore.user.email = result.data.customer.email
+    console.log('Customer data response:', response)
+    userStore.user = {
+      email: response?.customer?.emailAddress || '',
+      name: response?.customer?.displayName || '',
     }
   } catch (error) {
     console.error('Error fetching customer data:', error)
