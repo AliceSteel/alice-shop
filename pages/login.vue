@@ -176,7 +176,7 @@ async function fetchCustomerData() {
         },
         body: JSON.stringify({
           operationName: 'GetCustomerData',
-          query: 'query { customer { emailAddress displayName }}',
+          query: 'query { customer { emailAddress { emailAddress } displayName }}',
           variables: {},
         }),
       }
