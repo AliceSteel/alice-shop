@@ -29,5 +29,5 @@ export default defineEventHandler(async (event) => {
     return { error: true, status: req.status }
   }
 
-  return await req.json()
+  return await req.json() 
 })
