@@ -138,41 +138,31 @@ async function getAccessToken() {
 
 async function fetchCustomerData() {
   console.log('Fetching customer data started...')
-  const response = await useFetch(
+  const { data, error } = await useFetch(
     'https://shopify.com/62268506202/account/customer/api/2025-01/graphql',
     {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        // Provide the token in Authorization header:
-        Authorization: `Bearer ${token}`
+      headers:  {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token.value}`,	
       },
       body: JSON.stringify({
-        operationName: 'SomeQuery',
-        query: `
-          query {
-            customer {
-              emailAddress {
-                emailAddress
-              }
-            }
-          }
-        `,
-        variables: {}
-      })
-    }
+        operationName: 'GetCustomerData',
+        query: 'query { customer { emailAddress { emailAddress }}}',
+        variables: {},
+      }),
+      }
     )
 
-  if (!response.ok) {
-    console.error('Failed to fetch customer data, status:', response.status)
+  if (error) {
+    console.error('Failed to fetch customer data, status:', error.value)
     return
   }
 
-  const result = await response.json()
-  console.log('Customer data:', result)
+  console.log('Customer data:', data.value)
   // Example: store the customer email in a Pinia store
   if (userStore.user) {
-    userStore.user.email = result.data.customer.emailAddress.emailAddress
+    userStore.user.email = data.customer.emailAddress.emailAddress
 
   }
 }
