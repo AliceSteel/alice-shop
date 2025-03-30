@@ -104,8 +104,8 @@ async function refreshAccessToken() {
     } else if (!data.value) {
         console.error('No data returned for refresh token.')
       } else {
+        console.log('all data: ', data.value)
       console.log('New Access Token:', data.value.access_token)
-      console.log('New Refresh Token:', data.value.refresh_token)
       storeToken(data.value.access_token, data.value.refresh_token, data.value.expires_in)
     }
     refreshingPromise = null
