@@ -121,12 +121,15 @@ async function getAccessToken() {
 
     if (error.value) {
       console.error('Error refreshing access token:', error.value)
-    } else if (!data.value) {
+    } 
+    else if (!data.value) {
         console.error('No data returned for refresh token.')
-      } else {
+    } 
+    else {
         console.log('all data: ', data.value)
-      console.log('New Access Token:', data.value.access_token)
-      storeToken(data.value.access_token, data.value.refresh_token, data.value.expires_in)
+        console.log('New Access Token:', data.value.access_token)
+        storeToken(data.value.access_token, data.value.refresh_token, data.value.expires_in)
+        token.value = data.value.access_token
     }
     refreshingPromise = null
   })()
