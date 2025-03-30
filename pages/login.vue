@@ -137,14 +137,14 @@ async function getAccessToken() {
 }
 
 async function fetchCustomerData() {
-  console.log('Fetching customer data started...')
+  console.log('Fetching customer data started with token:', token.value)
   const { data, error } = await useFetch(
     'https://shopify.com/62268506202/account/customer/api/2025-01/graphql',
     {
       method: 'POST',
       headers:  {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${token.value}`,	
+      Authorization: token.value,	
       },
       body: JSON.stringify({
         operationName: 'GetCustomerData',
