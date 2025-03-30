@@ -29,7 +29,6 @@
 
     const clickHandler = () => {
     if (!user.value.name) {
-      console.log('Clicked, but User not logged in')
       // Not logged in yet, so redirect to Shopify login
       redirectToShopifyLogin()
     } else {

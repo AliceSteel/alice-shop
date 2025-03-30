@@ -140,27 +140,6 @@ async function getAccessToken() {
   localStorage.setItem('access_token_expiration', expirationTime.toString())
 }
 
-/* async function fetchCustomerData(){
-  console.log('started fetchting v2')
-  const client = new shopifyClient.clients.Storefront({
-    domain: config.public.SHOPIFY_DOMAIN,
-    config.public.SHOPIFY_STOREFRONT_ACCESS_TOKEN,
-  });
-  const data = await client.query({
-    data: `query {
-      customer(customerAccessToken: ${token.value}) {
-        id
-        firstName
-        lastName
-        acceptsMarketing
-        email
-        phone
-      }
-    }`,
-});
-
-} */
-
 async function fetchCustomerData() {
   console.log('Fetching customer data 2024-10:')
 
@@ -188,8 +167,8 @@ async function fetchCustomerData() {
     }
     console.log('Customer data response:', response)
     userStore.user = {
-      email: response?.customer?.emailAddress || '',
-      name: response?.customer?.displayName || '',
+      email: response.data.customer?.emailAddress || '',
+      name: response.data.customer?.displayName || '',
     }
   } catch (error) {
     console.error('Error fetching customer data:', error)
