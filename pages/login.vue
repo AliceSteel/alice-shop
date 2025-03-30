@@ -9,11 +9,14 @@ import { useRouter, useRoute } from 'vue-router'
 import type { AccessTokenResponseType } from '~/types/login.d'
 import { useConfigStore } from '~/stores/configStore'
 import { onMounted , ref} from 'vue'
+import { getShopifyClient } from '~/utils/getShopifyClient'
 
 const router = useRouter()
 const route = useRoute()
 const config = useRuntimeConfig()
 const userStore = useConfigStore()
+const shopifyClient = getShopifyClient()
+
 
 const clientId = config.public.CLIENT_ID
 const token = ref<string| null>(null)
@@ -74,9 +77,22 @@ onMounted(async () => {
 })
 
 /**
+ * Retrieve the current access token or refresh it if expired
+ */
+async function getAccessToken() {
+  const accessToken = localStorage.getItem('access_token')
+  const expirationTime = parseInt(localStorage.getItem('access_token_expiration') || '0')
+
+  if (new Date().getTime() > expirationTime) {
+    await refreshAccessToken()
+    return localStorage.getItem('access_token')
+  } 
+  return accessToken 
+}
+/**
  * Refresh the access token when it’s expired
  */
-async function refreshAccessToken() {
+ async function refreshAccessToken() {
   if (refreshingPromise) {
     // A refresh is already in progress; wait for it
     return refreshingPromise
@@ -114,19 +130,6 @@ async function refreshAccessToken() {
   return refreshingPromise
 }
 /**
- * Retrieve the current access token or refresh it if expired
- */
-async function getAccessToken() {
-  const accessToken = localStorage.getItem('access_token')
-  const expirationTime = parseInt(localStorage.getItem('access_token_expiration') || '0')
-
-  if (new Date().getTime() > expirationTime) {
-    await refreshAccessToken()
-    return localStorage.getItem('access_token')
-  } 
-  return accessToken 
-}
-/**
  * Store tokens and set expiration in localStorage
  */
  function storeToken(accessToken: string, refreshToken: string, expiresIn: number) {
@@ -136,34 +139,71 @@ async function getAccessToken() {
   localStorage.setItem('access_token_expiration', expirationTime.toString())
 }
 
+/* async function fetchCustomerData(){
+  console.log('started fetchting v2')
+  const client = new shopifyClient.clients.Storefront({
+    domain: config.public.SHOPIFY_DOMAIN,
+    config.public.SHOPIFY_STOREFRONT_ACCESS_TOKEN,
+  });
+  const data = await client.query({
+    data: `query {
+      customer(customerAccessToken: ${token.value}) {
+        id
+        firstName
+        lastName
+        acceptsMarketing
+        email
+        phone
+      }
+    }`,
+});
+
+} */
+
 async function fetchCustomerData() {
-  console.log('Fetching customer data started with token:', token.value)
-  const { data, error } = await useFetch(
-    'https://shopify.com/62268506202/account/customer/api/2025-01/graphql',
-    {
-      method: 'POST',
-      headers:  {
-      'Content-Type': 'application/json',
-      Authorization: token.value,	
-      },
-      body: JSON.stringify({
-        operationName: 'GetCustomerData',
-        query: 'query { customer { emailAddress { emailAddress }}}',
-        variables: {},
-      }),
+  console.log('Fetching customer data 2024-10:')
+
+  try {
+    const response = await $fetch(
+      `https://shopify.com/62268506202/account/customer/api/2024-10/graphql`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token.value, // Pass the token directly
+        },
+        body: JSON.stringify({
+          operationName: 'GetCustomerData',
+          query: `
+            query {
+              customer(customerAccessToken: "${token.value}") {
+                id
+                firstName
+                lastName
+                acceptsMarketing
+                email
+                phone
+              }
+            }
+          `,
+          variables: {},
+        }),
       }
     )
 
-  if (error) {
-    console.error('Failed to fetch customer data, status:', error.value)
-    return
-  }
+    if (!response.ok) {
+      console.error('Failed to fetch customer data, status:', response.status)
+      return
+    }
 
-  console.log('Customer data:', data.value)
-  // Example: store the customer email in a Pinia store
-  if (userStore.user) {
-    userStore.user.email = data.customer.emailAddress.emailAddress
+    const result = await response.json()
+    console.log('Customer data:', result)
 
+    if (userStore.user) {
+      userStore.user.email = result.data.customer.email
+    }
+  } catch (error) {
+    console.error('Error fetching customer data:', error)
   }
 }
 </script>
