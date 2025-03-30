@@ -1,18 +1,18 @@
 <template>
-  <div class="flex flex-col gap-1 backdrop-blur-sm rounded-full">
+  <div class="flex flex-col gap-1 backdrop-blur-sm rounded-lg p-2">
     <button @click="clickHandler">
-      <span v-if="user.name" class="">Hi, {{ user.name }}</span>
+      <p v-if="user.name" class="">Hi, {{ user.name }}</p>
       <div v-else class="flex items-center">
         <span class="inline-block sm:hidden material-symbols-outlined text-4xl"
           >account_circle</span
         >
         <p class="hidden sm:block">Login</p>
       </div>
-    </button>
-    <div v-if="user.name && isOpen" class="w-full bg-orange-300 p-2 rounded-lg">
+      <div v-if="user.name && isOpen" class="w-full">
       <h4>{{ user.name }}</h4>
       <p>{{ user.email }}</p>
     </div>
+    </button> 
   </div>
 </template>
 
@@ -107,7 +107,7 @@
     .replace(/\+/g, '-')
     .replace(/\//g, '_')
     .replace(/=+$/, '')
-}
+}/* 
 async function isUserLoggedIn() {
   const accessToken = localStorage.getItem('access_token')
   const expirationTime = parseInt(localStorage.getItem('access_token_expiration') || '0')
@@ -116,7 +116,7 @@ async function isUserLoggedIn() {
     return false // Token expired
   } 
   return true // Token valid 
-}
+} */
 </script>
 
 <style>

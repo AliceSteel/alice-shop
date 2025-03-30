@@ -15,20 +15,16 @@ const router = useRouter()
 const route = useRoute()
 const config = useRuntimeConfig()
 const userStore = useConfigStore()
-const shopifyClient = getShopifyClient()
 
 
 const clientId = config.public.CLIENT_ID
 const token = ref<string| null>(null)
-let refreshingPromise: Promise<void> | null = null
 
 onMounted(async () => {
   // Attempt to get token from local storage or refresh if expired
   token.value = await getAccessToken()
 
   if(!token.value){
-    console.log('code:', route.query.code)
-    console.log('state:', route.query.state)
     localStorage.setItem('my-oauth-state', route.query.state as string)
   const code = route.query.code as string
   /**
@@ -38,7 +34,6 @@ onMounted(async () => {
     if (!codeVerifier) {
       console.error('Code verifier is missing')
     } else {
-    console.log('starting auth request 37: ')
 
     const { data, error } = await useFetch<AccessTokenResponseType>('/api/shopify/callback', {
         method: 'POST',
@@ -56,17 +51,11 @@ onMounted(async () => {
     }  else if (!data.value) {
       console.error('No data returned.')
     } else {
-      console.log('Access Token62:', data.value.access_token)
-      console.log('Refresh Token63:', data.value.refresh_token)
       token.value = data.value.access_token
       storeToken(data.value.access_token, data.value.refresh_token, data.value.expires_in)
     }
   } 
 }
-
-  console.log('Access Token70:', token.value)
-  console.log('Refresh Token71:', localStorage.getItem('refresh_token'))
-  console.log('Expiration Time72:', localStorage.getItem('access_token_expiration'))
   if(token.value){
     fetchCustomerData()
     router.push('/') // Redirect to home page after successful login
@@ -108,7 +97,6 @@ async function getAccessToken() {
       refreshingPromise = null
       return
   }
-  console.log('calling refresh token...')
   const response = await useFetch<AccessTokenResponseType>('/api/shopify/callback', {
       method: 'POST',
       body: {
@@ -167,7 +155,7 @@ async function fetchCustomerData() {
     }
     console.log('Customer data response:', response)
     userStore.user = {
-      email: response.data.customer?.emailAddress || '',
+      email: response.data.customer?.emailAddress?.emailAddress || '',
       name: response.data.customer?.displayName || '',
     }
   } catch (error) {
