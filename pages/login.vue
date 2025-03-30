@@ -80,19 +80,23 @@ onMounted(async () => {
  * Retrieve the current access token or refresh it if expired
  */
 async function getAccessToken() {
-  const accessToken = localStorage.getItem('access_token')
   const expirationTime = parseInt(localStorage.getItem('access_token_expiration') || '0')
+  console.log('Gettin with expiry date  token...', expirationTime)
 
   if (new Date().getTime() > expirationTime) {
+    console.log('Access token expired, need to refresh')
     await refreshAccessToken()
-    return localStorage.getItem('access_token')
   } 
+  const accessToken = localStorage.getItem('access_token')
+  const newExpirationTime = parseInt(localStorage.getItem('access_token_expiration') || '0')
+  console.log('Access Token expiration time92:', newExpirationTime)
   return accessToken 
 }
 /**
  * Refresh the access token when it’s expired
  */
  async function refreshAccessToken() {
+  console.log('Refreshing access token strted...')
   if (refreshingPromise) {
     // A refresh is already in progress; wait for it
     return refreshingPromise
@@ -105,7 +109,7 @@ async function getAccessToken() {
       refreshingPromise = null
       return
     }
-
+    console.log('calling refresh token...')
     const { data, error } = await useFetch<AccessTokenResponseType>('/api/shopify/callback', {
       method: 'POST',
       body: {
@@ -170,7 +174,8 @@ async function fetchCustomerData() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: token.value, // Pass the token directly
+          Authorization: token.value,
+          Origin: 'https://alice-shop.vercel.app',
         },
         body: JSON.stringify({
           operationName: 'GetCustomerData',
