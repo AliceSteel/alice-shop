@@ -110,7 +110,7 @@ async function getAccessToken() {
       return
     }
     console.log('calling refresh token...')
-    const { data, error } = await useFetch<AccessTokenResponseType>('/api/shopify/callback', {
+    const response = await useFetch<AccessTokenResponseType>('/api/shopify/callback', {
       method: 'POST',
       body: {
         grant_type: 'refresh_token',
@@ -119,17 +119,18 @@ async function getAccessToken() {
       }
     })
 
-    if (error.value) {
-      console.error('Error refreshing access token:', error.value)
+    if (response.error) {
+      console.error('Error refreshing access token:', response)
     } 
-    else if (!data.value) {
-        console.error('No data returned for refresh token.')
+    else if (!response.data) {
+      console.log('')
+      console.error('No data returned for refresh token.')
     } 
     else {
-        console.log('all data: ', data.value)
-        console.log('New Access Token:', data.value.access_token)
-        storeToken(data.value.access_token, data.value.refresh_token, data.value.expires_in)
-        token.value = data.value.access_token
+        console.log('all data: ', response.data.value)
+        console.log('New Access Token:', response.data.value.access_token)
+        storeToken(response.data.value.access_token, response.data.value.refresh_token, response.data.value.expires_in)
+        token.value = response.data.value.access_token
     }
     refreshingPromise = null
   })()

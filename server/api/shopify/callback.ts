@@ -19,7 +19,8 @@ export default defineEventHandler(async (event) => {
   const req = await fetch(tokenRequestUrl, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/x-www-form-urlencoded'
+      'Content-Type': 'application/x-www-form-urlencoded',
+      Origin: 'https://alice-shop.vercel.app',
     },
     body: params
   })
