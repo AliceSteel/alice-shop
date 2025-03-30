@@ -82,6 +82,10 @@ onMounted(async () => {
 async function getAccessToken() {
   const expirationTime = parseInt(localStorage.getItem('access_token_expiration') || '0')
   console.log('Gettin with expiry date  token...', expirationTime)
+  if(expirationTime === 0) {
+    console.log('No access token found')
+    return null
+  }
 
   if (new Date().getTime() > expirationTime) {
     console.log('Access token expired, need to refresh')
@@ -97,46 +101,35 @@ async function getAccessToken() {
  */
  async function refreshAccessToken() {
   console.log('Refreshing access token strted...')
-  if (refreshingPromise) {
-    // A refresh is already in progress; wait for it
-    return refreshingPromise
-  }
-  
-  refreshingPromise = (async () => {
-    const refreshToken = localStorage.getItem('refresh_token')
-    if (!refreshToken) {
+
+  const refreshToken = localStorage.getItem('refresh_token')
+  if (!refreshToken) {
       console.error('Refresh token is missing')
       refreshingPromise = null
       return
-    }
-    console.log('calling refresh token...')
-    const response = await useFetch<AccessTokenResponseType>('/api/shopify/callback', {
+  }
+  console.log('calling refresh token...')
+  const response = await useFetch<AccessTokenResponseType>('/api/shopify/callback', {
       method: 'POST',
       body: {
         grant_type: 'refresh_token',
         client_id: clientId,
         refresh_token: refreshToken
       }
-    })
+  })
 
-    if (response.error) {
-      console.error('Error refreshing access token:', response)
-    } 
-    else if (!response.data) {
-      console.log('')
-      console.error('No data returned for refresh token.')
-    } 
-    else {
-        console.log('all data: ', response.data.value)
-        console.log('New Access Token:', response.data.value.access_token)
-        storeToken(response.data.value.access_token, response.data.value.refresh_token, response.data.value.expires_in)
-        token.value = response.data.value.access_token
-    }
-    refreshingPromise = null
-  })()
-  // Wait for the refresh request to complete
-  return refreshingPromise
-}
+  if (response.error) {
+    console.error('Error refreshing access token:', response)
+  } 
+  else if (!response.data) {
+    console.error('No data returned for refresh token.')
+  } 
+  
+    console.log('all data: ', response.data.value)
+    console.log('New Access Token:', response.data.value.access_token)
+    storeToken(response.data.value.access_token, response.data.value.refresh_token, response.data.value.expires_in)
+    token.value = response.data.value.access_token
+  }
 /**
  * Store tokens and set expiration in localStorage
  */
@@ -183,25 +176,14 @@ async function fetchCustomerData() {
         },
         body: JSON.stringify({
           operationName: 'GetCustomerData',
-          query: `
-            query {
-              customer(customerAccessToken: "${token.value}") {
-                id
-                firstName
-                lastName
-                acceptsMarketing
-                email
-                phone
-              }
-            }
-          `,
+          query: 'query { customer { emailAddress { emailAddress }}}',
           variables: {},
         }),
       }
     )
 
     if (!response.ok) {
-      console.error('Failed to fetch customer data, status:', response.status)
+      console.error('Failed to fetch customer data, status:', response)
       return
     }
 
