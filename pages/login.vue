@@ -65,9 +65,6 @@ onMounted(async () => {
   
 })
 
-/**
- * Retrieve the current access token or refresh it if expired
- */
 async function getAccessToken() {
   const expirationTime = parseInt(localStorage.getItem('access_token_expiration') || '0')
   console.log('Gettin with expiry date  token...', expirationTime)
@@ -82,23 +79,18 @@ async function getAccessToken() {
   } 
   const accessToken = localStorage.getItem('access_token')
   const newExpirationTime = parseInt(localStorage.getItem('access_token_expiration') || '0')
-  console.log('Access Token expiration time92:', newExpirationTime)
   return accessToken 
 }
-/**
- * Refresh the access token when it’s expired
- */
+
  async function refreshAccessToken() {
   console.log('Refreshing access token strted...')
 
   const refreshToken = localStorage.getItem('refresh_token')
   if (!refreshToken) {
       console.error('Refresh token is missing')
-      refreshingPromise = null
       return
   }
-  const response = await useFetch<AccessTokenResponseType>('/api/shopify/callback', {
-      method: 'POST',
+  const { data, error } = await useFetch<AccessTokenResponseType>('/api/shopify/callback', {
       body: {
         grant_type: 'refresh_token',
         client_id: clientId,
@@ -106,17 +98,16 @@ async function getAccessToken() {
       }
   })
 
-  if (response.error) {
-    console.error('Error refreshing access token:', response)
+  if (error.value) {
+    console.error('Error refreshing access token:', error.value)
   } 
-  else if (!response.data) {
+  else if (!data) {
     console.error('No data returned for refresh token.')
   } 
-  
-    console.log('all data: ', response.data.value)
-    console.log('New Access Token:', response.data.value.access_token)
-    storeToken(response.data.value.access_token, response.data.value.refresh_token, response.data.value.expires_in)
-    token.value = response.data.value.access_token
+    console.log('all data: ', data.value)
+    console.log('New Access Token after refresh:', data.value.access_token)
+    storeToken(data.value.access_token, data.value.refresh_token, data.value.expires_in)
+    token.value = data.value.access_token
   }
 /**
  * Store tokens and set expiration in localStorage
@@ -129,7 +120,6 @@ async function getAccessToken() {
 }
 
 async function fetchCustomerData() {
-  console.log('Fetching customer data 2024-10:')
 
   try {
     const response = await $fetch(
@@ -143,7 +133,7 @@ async function fetchCustomerData() {
         },
         body: JSON.stringify({
           operationName: 'GetCustomerData',
-          query: 'query { customer { emailAddress { emailAddress } displayName }}',
+          query: 'query { customer { emailAddress { emailAddress } firstName }}',
           variables: {},
         }),
       }
@@ -156,7 +146,7 @@ async function fetchCustomerData() {
     console.log('Customer data response:', response)
     userStore.user = {
       email: response.data.customer?.emailAddress?.emailAddress || '',
-      name: response.data.customer?.displayName || '',
+      name: response.data.customer?.firstName || '',
     }
   } catch (error) {
     console.error('Error fetching customer data:', error)

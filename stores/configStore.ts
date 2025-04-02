@@ -6,8 +6,8 @@ export const useConfigStore = defineStore('configStore', {
     productsAvailable: [] as string[],
     categories: [] as string[],
     user: {
-      name: '',
-      email: ''
+      name: 'Alice',
+      email: 'test@test.com'
     } as User | null | undefined
   }),
   actions: {
