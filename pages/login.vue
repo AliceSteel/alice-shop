@@ -37,7 +37,8 @@ onMounted(async () => {
 
 async function getAccessToken() {
   const expirationTime = parseInt(expirationCookie.value || '0')
-  console.log('Gettin with expiry date  token...', expirationTime)
+  console.log('getAccessToken fn: expiryTime 40: ', expirationTime)
+
   if (!refreshTokenCookie.value || !accessTokenCookie.value) {
     console.error('Refresh token is missing')
     await fetchAccessToken()
@@ -72,18 +73,24 @@ async function fetchAccessToken() {
   if (error.value) {
     console.error('Error obtaining access token:', error.value)
   } else if (!data.value) {
-    console.error('No data returned.')
+    console.error('No data returned, data: ', data, data.value)
   } else {
     token.value = data.value.access_token
     storeToken(data.value.access_token, data.value.refresh_token, data.value.expires_in)
   }
 }
 async function refreshAccessToken() {
-  console.log('Refreshing access token...')
+  console.log('Refreshing access token fn started...')
   const refreshToken = refreshTokenCookie.value
 
 
+  if (!refreshToken) {
+    console.error('Refresh token is missing 88')
+    await fetchAccessToken()
+    return
+  }
   const { data, error } = await useFetch<AccessTokenResponseType>('/api/shopify/callback', {
+    method: 'POST',
     body: {
       grant_type: 'refresh_token',
       client_id: clientId,
