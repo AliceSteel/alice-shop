@@ -71,6 +71,7 @@ const redirectToShopifyLogin = async () => {
 
   window.location.href = authorizationRequestUrl.toString()
 }
+
 const logoutHandler = async () => {
   console.log('Logout handler started...')
 
@@ -80,17 +81,17 @@ const logoutHandler = async () => {
     return
   }
 
-  const { data, error } = await useFetch('/api/shopify/logout', {
-    console.log('Logout response:', data.value)
-    if(error.value) {
-      console.error('Error during logout:', error.value)
-} else {
-  console.log('Logout successful')
-userStore.clearUser()
-window.location.href = logoutUrl.toString()
-    }
-  })
- 
+  const { data, error } = await useFetch('/api/shopify/logout')
+  console.log('Logout response:', data.value)
+  if (error.value) {
+    console.error('Error during logout:', error.value)
+  } else {
+
+    console.log('Logout successful: ', data.value)
+    userStore.clearUser()
+  }
+
+
 }
 /* HELPER FNs */
 
