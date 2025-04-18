@@ -7,116 +7,111 @@
 <script setup lang="ts">
 import { useRouter, useRoute } from 'vue-router'
 import type { AccessTokenResponseType } from '~/types/login.d'
-import { useConfigStore } from '~/stores/configStore'
-import { onMounted , ref} from 'vue'
+import { useUserStore } from '~/stores/userStore'
+import { onMounted, ref } from 'vue'
+import { storeToRefs } from 'pinia'
 import { getShopifyClient } from '~/utils/getShopifyClient'
 
 const router = useRouter()
 const route = useRoute()
 const config = useRuntimeConfig()
-const userStore = useConfigStore()
+const userStore = useUserStore()
 
+const accessTokenCookie = useCookie('access_token')
+const refreshTokenCookie = useCookie('refresh_token')
+const expirationCookie = useCookie('access_token_expiration')
+const { user } = storeToRefs(userStore)
 
 const clientId = config.public.CLIENT_ID
-const token = ref<string| null>(null)
+const token = ref<string | null>(null)
 
 onMounted(async () => {
   // Attempt to get token from local storage or refresh if expired
   token.value = await getAccessToken()
 
-  if(!token.value){
-    localStorage.setItem('my-oauth-state', route.query.state as string)
-  const code = route.query.code as string
-  /**
-   * Perform OAuth flow if code is present
-   */
-    const codeVerifier = localStorage.getItem('code-verifier')
-    if (!codeVerifier) {
-      console.error('Code verifier is missing')
-    } else {
+  console.log('Access token obtained on mounted 32:', token.value)
+  await fetchCustomerData()
+  router.push('/') // Redirect to home page after successful login
 
-    const { data, error } = await useFetch<AccessTokenResponseType>('/api/shopify/callback', {
-        method: 'POST',
-        body: {
-          grant_type: 'authorization_code',
-          client_id: clientId,
-          code,
-          redirect_uri: `${window.location.origin}/login`,
-          code_verifier: codeVerifier
-        }
-      })
-
-    if (error.value) {
-      console.error('Error obtaining access token:', error.value)
-    }  else if (!data.value) {
-      console.error('No data returned.')
-    } else {
-      token.value = data.value.access_token
-      storeToken(data.value.access_token, data.value.refresh_token, data.value.expires_in)
-    }
-  } 
-}
-  if(token.value){
-    fetchCustomerData()
-    router.push('/') // Redirect to home page after successful login
-  } else {
-    console.error('Failed to obtain access token73')
-  }
-  
 })
 
 async function getAccessToken() {
-  const expirationTime = parseInt(localStorage.getItem('access_token_expiration') || '0')
+  const expirationTime = parseInt(expirationCookie.value || '0')
   console.log('Gettin with expiry date  token...', expirationTime)
-  if(expirationTime === 0) {
-    console.log('No access token found')
-    return null
+  if (!refreshTokenCookie.value || !accessTokenCookie.value) {
+    console.error('Refresh token is missing')
+    await fetchAccessToken()
   }
-
   if (new Date().getTime() > expirationTime) {
     console.log('Access token expired, need to refresh')
     await refreshAccessToken()
-  } 
-  const accessToken = localStorage.getItem('access_token')
-  const newExpirationTime = parseInt(localStorage.getItem('access_token_expiration') || '0')
-  return accessToken 
+  }
+  else {
+    console.log('Access token is still valid: ', accessTokenCookie.value, 'expirationTime: ', expirationTime)
+  }
+  return accessTokenCookie.value
 }
 
- async function refreshAccessToken() {
-  console.log('Refreshing access token strted...')
+async function fetchAccessToken() {
+  console.log('Fetching access token  started 67...')
+  const code = route.query.code as string
+  const state = route.query.state as string
+  const codeVerifier = localStorage.getItem('code-verifier') as string
 
-  const refreshToken = localStorage.getItem('refresh_token')
-  if (!refreshToken) {
-      console.error('Refresh token is missing')
-      return
-  }
   const { data, error } = await useFetch<AccessTokenResponseType>('/api/shopify/callback', {
-      body: {
-        grant_type: 'refresh_token',
-        client_id: clientId,
-        refresh_token: refreshToken
-      }
+    method: 'POST',
+    body: {
+      grant_type: 'authorization_code',
+      client_id: clientId,
+      code,
+      redirect_uri: `${window.location.origin}/login`,
+      code_verifier: codeVerifier
+    }
+  })
+
+  if (error.value) {
+    console.error('Error obtaining access token:', error.value)
+  } else if (!data.value) {
+    console.error('No data returned.')
+  } else {
+    token.value = data.value.access_token
+    storeToken(data.value.access_token, data.value.refresh_token, data.value.expires_in)
+  }
+}
+async function refreshAccessToken() {
+  console.log('Refreshing access token...')
+  const refreshToken = refreshTokenCookie.value
+
+
+  const { data, error } = await useFetch<AccessTokenResponseType>('/api/shopify/callback', {
+    body: {
+      grant_type: 'refresh_token',
+      client_id: clientId,
+      refresh_token: refreshToken
+    }
   })
 
   if (error.value) {
     console.error('Error refreshing access token:', error.value)
-  } 
+  }
   else if (!data) {
     console.error('No data returned for refresh token.')
-  } 
-    console.log('all data: ', data.value)
-    console.log('New Access Token after refresh:', data.value.access_token)
-    storeToken(data.value.access_token, data.value.refresh_token, data.value.expires_in)
-    token.value = data.value.access_token
   }
+  console.log('all data: ', data.value)
+  console.log('New Access Token after refresh:', data.value.access_token)
+  storeToken(data.value.access_token, data.value.refresh_token, data.value.expires_in)
+  token.value = data.value.access_token
+}
 /**
- * Store tokens and set expiration in localStorage
+ * Store tokens and set expiration in cookies
  */
- function storeToken(accessToken: string, refreshToken: string, expiresIn: number) {
-  localStorage.setItem('access_token', accessToken)
-  localStorage.setItem('refresh_token', refreshToken)
+function storeToken(accessToken: string, refreshToken: string, expiresIn: number) {
   const expirationTime = new Date().getTime() + expiresIn * 1000
-  localStorage.setItem('access_token_expiration', expirationTime.toString())
+  console.log('Setting expiration time:', expirationTime)
+
+  accessTokenCookie.value = accessToken
+  refreshTokenCookie.value = refreshToken
+  expirationCookie.value = expirationTime.toString()
 }
 
 async function fetchCustomerData() {
@@ -144,10 +139,11 @@ async function fetchCustomerData() {
       return
     }
     console.log('Customer data response:', response)
-    userStore.user = {
+    user.value = {
       email: response.data.customer?.emailAddress?.emailAddress || '',
       name: response.data.customer?.firstName || '',
     }
+    userStore.saveUserCookie(user.value)
   } catch (error) {
     console.error('Error fetching customer data:', error)
   }

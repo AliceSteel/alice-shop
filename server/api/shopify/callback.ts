@@ -12,7 +12,8 @@ export default defineEventHandler(async (event) => {
     params.append('code', body.code)
     params.append('redirect_uri', body.redirect_uri)
     params.append('code_verifier', body.code_verifier)
-  } else if (body.grant_type === 'refresh_token') {
+  } 
+  else if (body.grant_type === 'refresh_token') {
     params.append('refresh_token', body.refresh_token)
   }
 

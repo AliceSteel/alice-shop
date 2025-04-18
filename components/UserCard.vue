@@ -15,16 +15,17 @@
         :class="{ 'opacity-100 max-h-96': isOpen }">
         <div class="absolute top-0 left-0 w-full h-full rounded-lg"></div>
       <p>{{ user.email }}</p>
+      <button @click.stop.prevent="logoutHandler">Logout</button>
     </div>
     </button> 
   </div>
 </template>
 
 <script setup="ts">
-import { useConfigStore } from '~/stores/configStore'
-const configStore = useConfigStore()
+import { useUserStore } from '~/stores/userStore'
+const userStore = useUserStore()
 
-const { user } = storeToRefs(configStore)
+const { user } = storeToRefs(userStore)
 const isOpen = ref(false)
 
 const clientId = useRuntimeConfig().public.CLIENT_ID
@@ -70,7 +71,27 @@ const redirectToShopifyLogin = async () => {
 
   window.location.href = authorizationRequestUrl.toString()
 }
+const logoutHandler = async () => {
+  console.log('Logout handler started...')
 
+  const idToken = useCookie('access_token').value
+  if (!idToken) {
+    console.error('ID token is missing. Cannot log out.')
+    return
+  }
+
+  const { data, error } = await useFetch('/api/shopify/logout', {
+    console.log('Logout response:', data.value)
+    if(error.value) {
+      console.error('Error during logout:', error.value)
+} else {
+  console.log('Logout successful')
+userStore.clearUser()
+window.location.href = logoutUrl.toString()
+    }
+  })
+ 
+}
 /* HELPER FNs */
 
 async function generateCodeVerifier() {
@@ -111,16 +132,7 @@ function generateRandomString(length = 16) {
     .replace(/\+/g, '-')
     .replace(/\//g, '_')
     .replace(/=+$/, '')
-}/* 
-async function isUserLoggedIn() {
-  const accessToken = localStorage.getItem('access_token')
-  const expirationTime = parseInt(localStorage.getItem('access_token_expiration') || '0')
-
-  if (new Date().getTime() > expirationTime) {
-    return false // Token expired
-  } 
-  return true // Token valid 
-} */
+}
 </script>
 
 <style>
