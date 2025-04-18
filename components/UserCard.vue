@@ -15,7 +15,7 @@
         :class="{ 'opacity-100 max-h-96': isOpen }">
         <div class="absolute top-0 left-0 w-full h-full rounded-lg"></div>
       <p>{{ user.email }}</p>
-      <button @click.stop.prevent="logoutHandler">Logout</button>
+      <button @click="logoutHandler">Logout</button>
     </div>
     </button> 
   </div>
@@ -33,6 +33,7 @@ const state = useState('state', () => generateRandomString())
 const nonce = useState('nonce', () => generateRandomString())
 
 const clickHandler = () => {
+  console.log('Click handler started...')
   if (!user.value.name) {
     // Not logged in yet, so redirect to Shopify login
     redirectToShopifyLogin()
@@ -90,8 +91,6 @@ const logoutHandler = async () => {
     console.log('Logout successful: ', data.value)
     userStore.clearUser()
   }
-
-
 }
 /* HELPER FNs */
 
