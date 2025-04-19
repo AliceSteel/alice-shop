@@ -15,7 +15,7 @@
         :class="{ 'opacity-100 max-h-96': isOpen }">
         <div class="absolute top-0 left-0 w-full h-full rounded-lg"></div>
       <p>{{ user.email }}</p>
-      <button @click="logoutHandler">Logout</button>
+      <button @click.stop="logoutHandler">Logout</button>
     </div>
     </button> 
   </div>
@@ -33,7 +33,7 @@ const state = useState('state', () => generateRandomString())
 const nonce = useState('nonce', () => generateRandomString())
 
 const clickHandler = () => {
-  console.log('Click handler started...')
+  console.log('Click handler on button started...')
   if (!user.value.name) {
     // Not logged in yet, so redirect to Shopify login
     redirectToShopifyLogin()
@@ -42,6 +42,7 @@ const clickHandler = () => {
     isOpen.value = !isOpen.value
   }
 }
+
 const redirectToShopifyLogin = async () => {
   console.log('Redirecting to Shopify login fn started...')
 
@@ -61,14 +62,11 @@ const redirectToShopifyLogin = async () => {
   authorizationRequestUrl.searchParams.append('response_type', 'code')
 
   const redirectUri = `${window.location.origin}/login`
-  console.log('Redirect URI:', redirectUri)
   authorizationRequestUrl.searchParams.append('redirect_uri', redirectUri)
   authorizationRequestUrl.searchParams.append('state', state.value)
   authorizationRequestUrl.searchParams.append('nonce', nonce.value)
   authorizationRequestUrl.searchParams.append('code_challenge', challenge)
   authorizationRequestUrl.searchParams.append('code_challenge_method', 'S256')
-
-  console.log('Generated URL line65:', authorizationRequestUrl.toString())
 
   window.location.href = authorizationRequestUrl.toString()
 }
