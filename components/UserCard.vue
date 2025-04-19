@@ -31,18 +31,15 @@ const state = useState('state', () => generateRandomString())
 const nonce = useState('nonce', () => generateRandomString())
 
 const clickHandler = () => {
-  console.log('Click handler on button started...')
   if (!user.value.name) {
     // Not logged in yet, so redirect to Shopify login
     redirectToShopifyLogin()
   } else {
-    console.log('user logged in:', user.value.name)
     isOpen.value = !isOpen.value
   }
 }
 
 const redirectToShopifyLogin = async () => {
-  console.log('Redirecting to Shopify login fn started...')
 
   const verifier = await generateCodeVerifier()
   const challenge = await generateCodeChallenge(verifier)
@@ -70,15 +67,12 @@ const redirectToShopifyLogin = async () => {
 }
 
 const logoutHandler = async () => {
-  console.log('Logout handler started...')
 
   const { data, error } = await useFetch('/api/shopify/logout')
-  console.log('Logout response:', data.value)
 
   if (error.value || data.value.error) {
     console.error('Error during logout:', error.value)
   } else {
-
     console.log('Logout successful: ', data.value)
     userStore.clearUserCookie()
   }
