@@ -10,7 +10,7 @@
         <p class="hidden sm:block">Login</p>
       </div>
     </button>
-    
+
     <div v-if="user.name" class="w-full absolute top-full left-0 opacity-0 max-h-0 transition-all duration-300" 
       :class="{ 'opacity-100 max-h-96': isOpen }">
       <p>{{ user.email }}</p>
@@ -69,7 +69,7 @@ const redirectToShopifyLogin = async () => {
   window.location.href = authorizationRequestUrl.toString()
 }
 
-/* const logoutHandler = async () => {
+const logoutHandler = async () => {
   console.log('Logout handler started...')
 
   const idToken = useCookie('access_token').value
@@ -87,8 +87,9 @@ const redirectToShopifyLogin = async () => {
     console.log('Logout successful: ', data.value)
     userStore.clearUser()
   }
-} */
-/* HELPER FNs */
+}
+
+/* HELPER FNs, move away: */
 
 async function generateCodeVerifier() {
   const rando = generateRandomCode()
