@@ -17,7 +17,7 @@
         :class="{ 'opacity-100 max-h-96': isOpen }">
         <div class="absolute top-0 left-0 w-full h-full rounded-lg"></div>
       <p>{{ user.email }}</p>
-      <button @click.stop="logoutHandler">Logout</button>
+      <button @click="logoutHandler">Logout</button>
     </div>
   </div>
 </template>
