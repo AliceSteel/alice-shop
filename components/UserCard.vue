@@ -71,30 +71,18 @@ const redirectToShopifyLogin = async () => {
 
 const logoutHandler = async () => {
   console.log('Logout handler started...')
-  /* 
-    const { data, error } = await useFetch('/api/shopify/logout')
-    console.log('Logout response:', data.value)
-  
-    if (error.value || data.value.error) {
-      console.error('Error during logout:', error.value)
-    } else {
-  
-      console.log('Logout successful: ', data.value)
-      userStore.clearUserCookie()
-    } */
-  const logoutUrl = new URL(`https://shopify.com/authentication/62268506202/logout`)
-  let idToken = useCookie('id_token')
-  logoutUrl.searchParams.append('id_token_hint', idToken.value)
 
-  console.log('Logout URL:', logoutUrl.toString())
+  const { data, error } = await useFetch('/api/shopify/logout')
+  console.log('Logout response:', data.value)
 
-  const req = await $fetch(logoutUrl.toString())
-  const contentType = req.headers.get('Content-Type')
+  if (error.value || data.value.error) {
+    console.error('Error during logout:', error.value)
+  } else {
 
-  if (contentType && contentType.includes('application/json')) {
-    const response = await req.json()
-    console.log('Logout response:', response)
+    console.log('Logout successful: ', data.value)
+    userStore.clearUserCookie()
   }
+
 }
 
 /* HELPER FNs, move away: */
