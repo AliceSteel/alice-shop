@@ -13,7 +13,13 @@ export default defineEventHandler(async (event) => {
       Origin: 'https://alice-shop.vercel.app',
     }
   })
+  const contentType = req.headers.get('Content-Type')
+if (contentType && contentType.includes('application/json')) {
   const response = await req.json()
-
   return response
+} else {
+  const textResponse = await req.text()
+  console.log('Non-JSON response:', textResponse)
+  return 
+}
 })
