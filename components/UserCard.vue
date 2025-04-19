@@ -80,12 +80,13 @@ const logoutHandler = async () => {
 
   const { data, error } = await useFetch('/api/shopify/logout')
   console.log('Logout response:', data.value)
-  if (error.value) {
+
+  if (error.value || data.value.error) {
     console.error('Error during logout:', error.value)
   } else {
 
     console.log('Logout successful: ', data.value)
-    userStore.clearUser()
+    userStore.clearUserCookie()
   }
 }
 

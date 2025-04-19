@@ -29,9 +29,12 @@ export const useUserStore = defineStore('userStore', {
       const accessTokenCookie = useCookie('access_token')
       const refreshTokenCookie = useCookie('refresh_token')
       const expirationCookie = useCookie('access_token_expiration')
+      const idTokenCookie = useCookie('id_token')
+
       accessTokenCookie.value = null
       refreshTokenCookie.value = null
       expirationCookie.value = null
+      idTokenCookie.value = null
     }
   }
 })

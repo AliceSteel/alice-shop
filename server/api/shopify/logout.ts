@@ -6,20 +6,14 @@ export default defineEventHandler(async (event) => {
   let idToken = getCookie(event, 'id_token') || '0'
   logoutUrl.searchParams.append('id_token_hint', idToken)
 
-  
-
   const req = await fetch(logoutUrl, {
     method: 'GET',
     headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
+      'Accept': 'application/json',
       Origin: 'https://alice-shop.vercel.app',
     }
   })
+  const response = await req.json()
 
-  if (!req.ok) {
-    console.log('response ids not ok', req)
-    return { error: true, status: req.status }
-  }
-
-  return await req.json() 
+  return response
 })
