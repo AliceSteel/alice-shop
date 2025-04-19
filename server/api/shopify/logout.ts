@@ -15,13 +15,12 @@ export default defineEventHandler(async (event) => {
     })
 
     const contentType = req.headers.get('Content-Type')
-    if (contentType && contentType.includes('text/html')) {
+    
+    if (contentType && (contentType.includes('text/html') || contentType.includes('text/plain'))) {
       const textResponse = await req.text()
-      console.log('HTML response:', textResponse)
-      return { message: 'HTML response received', data: textResponse }
+      return { data: textResponse }
     } else {
-      console.log('Unexpected response type:', contentType)
-      return { message: 'Unexpected response type', contentType }
+      return { message: 'Unexpected response type', contentType , data: req}
     }
   } catch (error:any) {
     console.error('Error during logout:', error)

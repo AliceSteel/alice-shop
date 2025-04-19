@@ -73,7 +73,7 @@ const logoutHandler = async () => {
   if (error.value || data.value.error) {
     console.error('Error during logout:', error.value)
   } else {
-    console.log('Logout successful: ', data.value)
+    console.log('Logout successful: ', data, data.value)
     userStore.clearUserCookie()
   }
 
