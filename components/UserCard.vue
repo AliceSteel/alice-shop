@@ -1,6 +1,7 @@
 <template>
   <div class="flex flex-col gap-1 backdrop-blur-sm rounded-lg p-2">
-    <button @click="clickHandler" class="relative">
+    <button @click="clickHandler"
+     class="relative">
       <p v-if="user.name">Hi, {{ user.name }}</p>
 
       <div v-else class="flex items-center">
@@ -9,15 +10,15 @@
         >
         <p class="hidden sm:block">Login</p>
       </div>
-
-      <div v-if="user.name" 
+    </button>
+     
+    <div v-if="user.name" 
         class="w-full absolute top-full  left-0 opacity-0 max-h-0 transition-all duration-300" 
         :class="{ 'opacity-100 max-h-96': isOpen }">
         <div class="absolute top-0 left-0 w-full h-full rounded-lg"></div>
       <p>{{ user.email }}</p>
       <button @click.stop="logoutHandler">Logout</button>
     </div>
-    </button> 
   </div>
 </template>
 
