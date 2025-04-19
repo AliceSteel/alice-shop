@@ -20,6 +20,8 @@ const userStore = useUserStore()
 const accessTokenCookie = useCookie('access_token')
 const refreshTokenCookie = useCookie('refresh_token')
 const expirationCookie = useCookie('access_token_expiration')
+const idTokenCookie = useCookie('id_token')
+
 const { user } = storeToRefs(userStore)
 
 const clientId = config.public.CLIENT_ID
@@ -76,7 +78,7 @@ async function fetchAccessToken() {
     console.error('No data returned, data: ', data, data.value)
   } else {
     token.value = data.value.access_token
-    storeToken(data.value.access_token, data.value.refresh_token, data.value.expires_in)
+    storeTokens(data.value.access_token, data.value.refresh_token, data.value.expires_in, data.value.id_token)
   }
 }
 async function refreshAccessToken() {
@@ -106,18 +108,19 @@ async function refreshAccessToken() {
   }
   console.log('all data: ', data.value)
   console.log('New Access Token after refresh:', data.value.access_token)
-  storeToken(data.value.access_token, data.value.refresh_token, data.value.expires_in)
+  storeTokens(data.value.access_token, data.value.refresh_token, data.value.expires_in, data.value.id_token)
   token.value = data.value.access_token
 }
 /**
  * Store tokens and set expiration in cookies
  */
-function storeToken(accessToken: string, refreshToken: string, expiresIn: number) {
+function storeTokens(accessToken: string, refreshToken: string, expiresIn: number, idToken: string) {
   const expirationTime = new Date().getTime() + expiresIn * 1000
   console.log('Setting expiration time:', expirationTime)
 
   accessTokenCookie.value = accessToken
   refreshTokenCookie.value = refreshToken
+  idTokenCookie.value = idToken
   expirationCookie.value = expirationTime.toString()
 }
 
