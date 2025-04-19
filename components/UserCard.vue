@@ -1,7 +1,6 @@
 <template>
-  <div class="flex flex-col gap-1 backdrop-blur-sm rounded-lg p-2">
-    <button @click="clickHandler"
-     class="relative">
+  <div class="relative flex flex-col gap-1 backdrop-blur-sm rounded-lg p-2">
+    <button @click="clickHandler" >
       <p v-if="user.name">Hi, {{ user.name }}</p>
 
       <div v-else class="flex items-center">
@@ -11,11 +10,9 @@
         <p class="hidden sm:block">Login</p>
       </div>
     </button>
-     
-    <div v-if="user.name" 
-        class="w-full absolute top-full  left-0 opacity-0 max-h-0 transition-all duration-300" 
-        :class="{ 'opacity-100 max-h-96': isOpen }">
-        <div class="absolute top-0 left-0 w-full h-full rounded-lg"></div>
+    
+    <div v-if="user.name" class="w-full absolute top-full left-0 opacity-0 max-h-0 transition-all duration-300" 
+      :class="{ 'opacity-100 max-h-96': isOpen }">
       <p>{{ user.email }}</p>
       <button @click="logoutHandler">Logout</button>
     </div>
@@ -72,7 +69,7 @@ const redirectToShopifyLogin = async () => {
   window.location.href = authorizationRequestUrl.toString()
 }
 
-const logoutHandler = async () => {
+/* const logoutHandler = async () => {
   console.log('Logout handler started...')
 
   const idToken = useCookie('access_token').value
@@ -90,7 +87,7 @@ const logoutHandler = async () => {
     console.log('Logout successful: ', data.value)
     userStore.clearUser()
   }
-}
+} */
 /* HELPER FNs */
 
 async function generateCodeVerifier() {
