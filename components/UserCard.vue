@@ -31,7 +31,7 @@ const state = useState('state', () => generateRandomString())
 const nonce = useState('nonce', () => generateRandomString())
 
 const clickHandler = () => {
-  if (!user.value.name) {
+  if (!user.value?.name) {
     // Not logged in yet, so redirect to Shopify login
     redirectToShopifyLogin()
   } else {

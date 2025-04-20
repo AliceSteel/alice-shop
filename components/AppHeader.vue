@@ -57,32 +57,32 @@
 </template>
 
 <script setup lang="ts">
-  const appConfig = useAppConfig()
-  const options = [
-    { name: 'transparent', value: 'bg-transparent' },
-    { name: 'Blue', value: 'bg-blue-500 text-alice-pink' },
-    { name: 'Khaki', value: 'bg-khaki text-neon-green' }
-  ]
-  const newBgTheme = ref<string>('')
+const appConfig = useAppConfig()
+const options = [
+  { name: 'transparent', value: 'bg-transparent' },
+  { name: 'Blue', value: 'bg-blue-500 text-alice-pink' },
+  { name: 'Khaki', value: 'bg-khaki text-neon-green' }
+]
+const newBgTheme = ref<string>('')
 
-  const onSelected = () => {
-    appConfig.theme.bgClass = newBgTheme.value
-  }
-  const isScrolled = ref<boolean>(false)
+const onSelected = () => {
+  appConfig.theme.bgClass = newBgTheme.value
+}
+const isScrolled = ref<boolean>(false)
 
-  onMounted(() => {
-    window.addEventListener('scroll', () => {
-      isScrolled.value = window.scrollY > 10
-    })
+onMounted(() => {
+  window.addEventListener('scroll', () => {
+    isScrolled.value = window.scrollY > 10
   })
+})
 </script>
 
 <style>
-  .material-symbols-outlined {
+.material-symbols-outlined {
   font-variation-settings:
-  'FILL' 0,
-  'wght' 100,
-  'GRAD' 0,
-  'opsz' 40
+    'FILL' 0,
+    'wght' 100,
+    'GRAD' 0,
+    'opsz' 40
 }
 </style>
