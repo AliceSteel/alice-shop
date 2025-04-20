@@ -34,6 +34,7 @@ onMounted(async () => {
   await fetchCustomerData()
 
   const redirectBackToPage = localStorage.getItem('redirect-from-page')
+  console.log('Redirecting back to page: ', redirectBackToPage)
   if (redirectBackToPage) {
     localStorage.removeItem('redirect-from-page')
     router.push(redirectBackToPage)
