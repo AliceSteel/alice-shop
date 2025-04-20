@@ -40,7 +40,8 @@ const clickHandler = () => {
 }
 
 const redirectToShopifyLogin = async () => {
-
+  console.log('Redirecting to Shopify login from: ', window.location.search)
+  localStorage.setItem('redirect-from-page', window.location.search)
   const verifier = await generateCodeVerifier()
   const challenge = await generateCodeChallenge(verifier)
   localStorage.setItem('code-verifier', verifier)
@@ -79,8 +80,7 @@ const logoutHandler = async () => {
 
 }
 
-/* HELPER FNs, move away: */
-
+/* HELPER FNs for Oauth: */
 async function generateCodeVerifier() {
   const rando = generateRandomCode()
   return base64UrlEncode(rando)
@@ -112,6 +112,7 @@ function convertBufferToString(hash) {
   const numberArray = Array.from(uintArray)
   return String.fromCharCode(...numberArray)
 }
+
 function generateRandomString(length = 16) {
   const array = new Uint8Array(length)
   crypto.getRandomValues(array)
