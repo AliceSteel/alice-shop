@@ -1,39 +1,14 @@
 import { defineEventHandler, type H3Event } from 'h3'
 import { getShopifyClient } from '~/utils/getShopifyClient'
+import { categoryQuery } from '~/queries/categoryQuery'
+
 
 export default defineEventHandler(async (event: H3Event) => {
   const shopifyClient = getShopifyClient()
   const categorySlug =
     event.context.params?.categorySlug || 'not found category'
 
-  const collectionQuery = `
-    query {
-      collection(handle: "${categorySlug}") {
-        id
-        products(first: 10) {
-          edges {
-            node {
-              id
-              description
-              title
-              handle
-              images(first: 1) {
-                edges {
-                  node {
-                    id
-                    url
-                    width
-                    height
-                    altText
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  `
+  const collectionQuery = categoryQuery(categorySlug)
 
   try {
     const { data, errors } = await shopifyClient.request(collectionQuery)
@@ -47,14 +22,15 @@ export default defineEventHandler(async (event: H3Event) => {
       })
     }
 
-    const collections = data.collection.products.edges
-    if (!collections) {
+    const collection = data.collection
+   
+    if (!collection) {
       throw createError({
         statusCode: 404,
         statusMessage: 'Collection not found'
       })
     }
-    return collections
+    return collection
   } catch (error) {
     console.error('Error fetching collection:', error)
 

@@ -30,21 +30,21 @@
 </template>
 
 <script setup lang="ts">
-  import type { Category } from '~/types/Category.d'
+import type { Category } from '~/types/Category.d'
 
-  const isMenuOpen = ref<boolean>(false)
-  const categories = ref<Category[]>([])
+const isMenuOpen = ref<boolean>(false)
+const categories = ref<Category[]>([])
 
-  const toggleMenu = () => {
-    isMenuOpen.value = !isMenuOpen.value
-  }
+const toggleMenu = () => {
+  isMenuOpen.value = !isMenuOpen.value
+}
 
-  const { data, error } = await useFetch('/api/categoryMeta')
-  if (error.value) {
-    throw createError({
-      ...error.value,
-      statusMessage: 'Could not fetch categories'
-    })
-  }
-  categories.value = data.value as Category[]
+const { data, error } = await useFetch('/api/categoryMeta')
+if (error.value) {
+  throw createError({
+    ...error.value,
+    statusMessage: 'Could not fetch categories'
+  })
+}
+categories.value = data.value as Category[]
 </script>

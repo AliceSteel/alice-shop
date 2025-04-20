@@ -11,7 +11,7 @@
         class="overflow-hidden transition-all ease-in duration-500 delay-300"
         :class="[
           { 'w-20 delay-0': !isScrolled },
-          { 'w-3.5 font-bold': isScrolled }
+          { 'w-[0.7rem] font-bold': isScrolled }
         ]"
       >
         ALICE
