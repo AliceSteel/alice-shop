@@ -21,10 +21,12 @@
 
 <script setup="ts">
 import { useUserStore } from '~/stores/userStore'
-const userStore = useUserStore()
+import { useRoute } from 'vue-router'
 
+const userStore = useUserStore()
 const { user } = storeToRefs(userStore)
 const isOpen = ref(false)
+const route = useRoute()
 
 const clientId = useRuntimeConfig().public.CLIENT_ID
 const state = useState('state', () => generateRandomString())
@@ -40,8 +42,9 @@ const clickHandler = () => {
 }
 
 const redirectToShopifyLogin = async () => {
-  console.log('Redirecting to Shopify login from: ', window.location.search)
-  localStorage.setItem('redirect-from-page', window.location.search)
+  console.log('Redirecting to Shopify login from: ', route.fullPath)
+  localStorage.setItem('redirect-from-page', route.fullPath)
+
   const verifier = await generateCodeVerifier()
   const challenge = await generateCodeChallenge(verifier)
   localStorage.setItem('code-verifier', verifier)
