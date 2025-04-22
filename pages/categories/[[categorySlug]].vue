@@ -22,15 +22,19 @@ const route = useRoute()
 const products = ref<{ node: Product }[]>([])
 const category = computed(() => route.params.categorySlug as string)
 const productStore = useProductStore()
-const { mountingDescription } = storeToRefs(productStore)
+const { mountingDescription, mountingPicture } = storeToRefs(productStore)
 
 const { data, error } = await useFetch(`/api/categories/${category.value}`)
 if (error.value) {
   throw createError({ ...error.value })
 }
-
+console.log('data fetched for collection: ', data.value)
 products.value = data.value.products.edges as { node: Product }[]
 mountingDescription.value = data.value.description as string
+mountingPicture.value = data.value.image as {
+  url: string
+  altText: string
+}
 
 useHead({
   title: `Alice Shop - ${category.value}`.toLocaleUpperCase()

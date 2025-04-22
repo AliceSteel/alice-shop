@@ -3,6 +3,10 @@ query {
   collection(handle: "${categorySlug}") {
     id
     description
+     image{
+      url
+      altText
+    }
     products(first: 10) {
       edges {
         node {

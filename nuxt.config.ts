@@ -7,7 +7,8 @@ export default defineNuxtConfig({
     '@vueuse/nuxt',
     '@pinia/nuxt',
     '@nuxt/fonts',
-    'nuxt-graphql-client'
+    'nuxt-graphql-client',
+    '@nuxt/image'
   ],
   css: ['~/assets/tailwind.css'],
   app: {

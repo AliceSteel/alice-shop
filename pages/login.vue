@@ -10,7 +10,6 @@ import type { AccessTokenResponseType } from '~/types/login.d'
 import { useUserStore } from '~/stores/userStore'
 import { onMounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
-import { getShopifyClient } from '~/utils/getShopifyClient'
 
 const router = useRouter()
 const route = useRoute()

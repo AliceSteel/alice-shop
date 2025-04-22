@@ -19,15 +19,18 @@
 
 <script setup lang="ts">
 import { useUserStore } from '~/stores/userStore'
+import { onMounted } from 'vue'
 
 const userStore = useUserStore()
 
-userStore.initUser()
 //client-side error handling:
 const reset = async (clearError: () => void) => {
   await navigateTo('/')
   clearError()
 }
+onMounted(() => {
+  userStore.initUser()
+})
 </script>
 
 <style>

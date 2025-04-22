@@ -1,70 +1,69 @@
 <template>
-  <div
-    class="w-full scroller h-screen overflow-y-auto overflow-x-hidden -mt-11"
-    v-if="product"
-  >
-    <section class="gsap-wrap h-screen flex flex-wrap sm:flex-nowrap w-full">
-      <div
-        class="p-wrap flex-1 relative h-[80vh] w-full min-w-60 sm:w-1/2 sm:mx-9 sm:my-10"
-      >
-        <div
+  <div v-if="product">
+    <section class="flex flex-wrap sm:flex-nowrap">
+      <div class="flex flex-col gap-5 w-full sm:w-1/2">
+        <NuxtImg
           v-for="(image, key) in images"
           :key="key"
-          class="panel w-full absolute top-0 left-0 bottom-0 bg-cover bg-center bg-no-repeat"
-          :style="{ backgroundImage: `url(${image.url})` }"
-        ></div>
+          class="min-h-[80vh] object-cover object-center mx-auto sm:mx-0"
+          :src="image.url"
+          :alt="image.altText"
+        />
       </div>
-
+         
       <div
-        class="flex-1 w-full sm:w-1/2 flex flex-col items-start justify-center bg-white px-10 py-20 gap-5 text-black uppercase"
-      >
-        <h1>{{ product.title }}</h1>
-        <p>{{ product.description }}</p>
+        class="w-full sm:w-1/2 bg-white text-black uppercase relative"
+        >
+        <div class="sticky top-0 h-fit  flex flex-col items-start justify-center px-10 py-20 gap-5"> 
+          <h1>{{ product.title }}</h1>
+          <p>{{ product.description }}</p>
 
-        <p v-if="variants.length < 2">
-          Price: {{ price?.currencyCode }} {{ price?.amount }}
-        </p>
-        <div
-          v-else
-          v-for="(variant, key) in variants"
-          :key="key"
-          class="flex justify-start items-center gap-4"
-        >
-          <label class="w-10 h-10 relative">
-            <input
-              type="radio"
-              name="size"
-              :value="variant"
-              v-model="variantSelected"
-            />
-            <span
-              class="material-symbols-outlined absolute top-0 left-0 w-10 h-10 flex items-center justify-center text-4xl rounded-full text-white bg-alice-orange"
-            >
-              done_outline
-            </span>
-          </label>
-          {{ variant.title }} : {{ variant.price?.currencyCode }}
-          {{ variant.price?.amount }}
+          <p v-if="variants.length < 2">
+            Price: {{ price?.currencyCode }} {{ price?.amount }}
+          </p>
+          <div
+            v-else
+            v-for="(variant, key) in variants"
+            :key="key"
+            class="flex justify-start items-center gap-4"
+          >
+            <label class="w-10 h-10 relative">
+              <input
+                type="radio"
+                name="size"
+                :value="variant"
+                v-model="variantSelected"
+              />
+              <span
+                class="material-symbols-outlined absolute top-0 left-0 w-10 h-10 flex items-center justify-center text-4xl rounded-full text-white bg-alice-orange"
+              >
+                done_outline
+              </span>
+            </label>
+            {{ variant.title }} : {{ variant.price?.currencyCode }}
+            {{ variant.price?.amount }}
+          </div>
+          <button
+            @click="handlePayment"
+            :disabled="isLoading"
+            class="bg-alice-orange text-white p-2 rounded-xl w-inherit text-center cursor-pointer w-full uppercase"
+          >
+            {{
+              isLoading
+                ? 'Redirecting...'
+                : `${price.amount} ${price.currencyCode} to payment`
+            }}
+          </button>
         </div>
-        <button
-          @click="handlePayment"
-          :disabled="isLoading"
-          class="bg-alice-orange text-white p-2 rounded-xl w-inherit text-center cursor-pointer w-full uppercase"
-        >
-          {{
-            isLoading
-              ? 'Redirecting...'
-              : `${price.amount} ${price.currencyCode} to payment`
-          }}
-        </button>
+        
+      
       </div>
     </section>
     <mounting-info/>
-  </div>
+  </div> 
 </template>
 
 <script setup lang="ts">
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import type { Product, Image, Variant } from '~/types/Product.d'
 import { getShopifyClient } from '~/utils/getShopifyClient'
 import { cartCreateMutation } from '~/queries/cartCreateMutation'
@@ -114,6 +113,7 @@ const variantSelected = ref<any>({
 if (variants.value.length < 2) {
   variantSelected.value = variants.value[0]
 }
+
 const emit = defineEmits(['handle-payment'])
 
 const paymentLink = ref('')
@@ -159,46 +159,7 @@ const handlePayment = async () => {
   await navigateTo(paymentLink.value, { external: true, redirectCode: 301 })
 }
 
-const { $gsap } = useNuxtApp() as any
-$gsap.registerPlugin(ScrollTrigger)
 
-onMounted(() => {
-  $gsap.set('.panel', {
-    zIndex: (i: number, target, targets) => targets.length - i
-  })
-
-  const panelElements = $gsap.utils.toArray('.panel')
-  const panels = panelElements.slice(0, -1)
-  panels.forEach((panel, i) => {
-    $gsap
-      .timeline({
-        scrollTrigger: {
-          trigger: 'section.gsap-wrap',
-          scroller: '.scroller',
-          start: () => 'top -' + window.innerHeight * (i + 0.5),
-          end: () => '+=' + panels.length * window.innerHeight,
-          scrub: true,
-          toggleActions: 'play none reverse none',
-          invalidateOnRefresh: true
-        }
-      })
-      .fromTo(panel, { height: '100%' }, { height: 0 })
-  })
-
-  ScrollTrigger.create({
-    trigger: 'section.gsap-wrap',
-    scroller: '.scroller',
-    scrub: true,
-    pin: true,
-    start: 'top top',
-    end: '+=' + (panels.length + 1) * window.innerHeight,
-    invalidateOnRefresh: true
-  })
-})
-
-onUnmounted(() => {
-  ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
-})
 </script>
 
 <style>
