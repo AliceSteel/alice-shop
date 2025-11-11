@@ -1,6 +1,6 @@
 <template>
   <div class="w-full overflow-x-hidden">
-    <section class="min-h-[50vh] flex items-center justify-center px-9">
+    <section class="min-h-[30vh] flex items-center justify-center px-9">
       <h1>Let's make walls less boring!</h1>
     </section>
     <div class="pinContainer">
@@ -11,9 +11,10 @@
           <div
             class="absolute top-0 z-10 w-full h-full flex items-center justify-center"
           >
-            <span class="material-icons-outlined text-9xl">
-              add_photo_alternate
-            </span>
+            <FontAwesomeIcon
+              :icon="faImage"
+              class="h-12"
+            />
           </div>
 
           <img
@@ -55,73 +56,74 @@
 </template>
 
 <script setup lang="ts">
-  const appConfig = useAppConfig()
-  const bgColor = appConfig.theme.bgClass || appConfig.theme.default
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { faImage } from '@fortawesome/free-solid-svg-icons'
+const appConfig = useAppConfig()
+const bgColor = appConfig.theme.bgClass || appConfig.theme.default
 
-  const { $gsap } = useNuxtApp() as any
-  let tl: GSAPTimeline
-  onMounted(() => {
-    tl = $gsap.timeline({
-      scrollTrigger: {
-        trigger: '.pinContainer',
-        start: 'top top',
-        end: '+=100%',
-        pin: true,
-        scrub: true,
-        anticipatePin: 1
-      }
-    })
-
-    tl.fromTo('.afterImage', { xPercent: 100 }, { xPercent: 0 }).fromTo(
-      '.afterImage img',
-      { xPercent: -100 },
-      { xPercent: 0 },
-      0
-    )
-
-    tl.fromTo('.about-us', { yPercent: 100 }, { yPercent: 10 }, 0.5)
-
-    tl.fromTo(
-      '.line',
-      { y: 50, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.5, stagger: 0.3 },
-      0.5
-    )
+const { $gsap } = useNuxtApp() as any
+let tl: GSAPTimeline
+onMounted(() => {
+  tl = $gsap.timeline({
+    scrollTrigger: {
+      trigger: '.pinContainer',
+      start: 'center center',
+      end: '+=100%',
+      pin: true,
+      scrub: true,
+      anticipatePin: 1
+    }
   })
-  onUnmounted(() => {
-    tl.scrollTrigger?.kill()
-    tl.kill()
-  })
-  /*  const token = '123'
 
-  const tokenCookie = useCookie('token')
-  tokenCookie.value = token */
+  tl.fromTo('.afterImage', { xPercent: 100 }, { xPercent: 0 }).fromTo(
+    '.afterImage img',
+    { xPercent: -100 },
+    { xPercent: 0 },
+    0
+  )
+
+  tl.fromTo('.about-us', { yPercent: 100 }, { yPercent: 10 }, 0.5)
+
+  tl.fromTo(
+    '.line',
+    { y: 50, opacity: 0 },
+    { y: 0, opacity: 1, duration: 0.5, stagger: 0.3 },
+    0.5
+  )
+})
+onUnmounted(() => {
+  tl.scrollTrigger?.kill()
+  tl.kill()
+})
+/*  const token = '123'
+
+const tokenCookie = useCookie('token')
+tokenCookie.value = token */
 </script>
 
 <style scoped>
-  .pinContainer {
+.pinContainer {
   height: 100vh;
   position: relative;
 }
 
 .beforeImage img {
   filter: blur(8px);
- /*  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0; */
 }
+
 .afterImage {
   position: absolute;
   overflow: hidden;
   top: 0;
 }
+
 .afterImage img {
   width: 100%;
   height: 100%;
   position: absolute;
   top: 0;
-} 
+}
+
 .comparisonImage img {
   width: 100%;
   height: 100%;

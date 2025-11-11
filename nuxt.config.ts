@@ -6,7 +6,6 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss',
     '@vueuse/nuxt',
     '@pinia/nuxt',
-    '@nuxt/fonts',
     'nuxt-graphql-client',
     '@nuxt/image'
   ],

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="product">
+  <div v-if="product" class="flex flex-col gap-8 pb-8">
     <section class="flex flex-wrap sm:flex-nowrap">
       <div class="flex flex-col gap-5 w-full sm:w-1/2">
         <NuxtImg
@@ -27,18 +27,23 @@
             :key="key"
             class="flex justify-start items-center gap-4"
           >
-            <label class="w-10 h-10 relative">
+            <label class="w-10 h-10 relative cursor-pointer">
               <input
                 type="radio"
                 name="size"
                 :value="variant"
                 v-model="variantSelected"
               />
-              <span
-                class="material-symbols-outlined absolute top-0 left-0 w-10 h-10 flex items-center justify-center text-4xl rounded-full text-white bg-alice-orange"
+             <span
+                class="icon absolute top-0 left-0 w-10 h-10 flex items-center justify-center text-4xl rounded-full bg-alice-orange"
+                :class="variantSelected === variant ? 'text-white' : 'text-alice-orange'"
               >
-                done_outline
+                <FontAwesomeIcon
+                  :icon="faCheck"
+                  class="h-4"
+                />
               </span>
+              
             </label>
             {{ variant.title }} : {{ variant.price?.currencyCode }}
             {{ variant.price?.amount }}
@@ -69,6 +74,8 @@ import { getShopifyClient } from '~/utils/getShopifyClient'
 import { cartCreateMutation } from '~/queries/cartCreateMutation'
 import { checkoutUrlQuery } from '~/queries/checkoutUrlQuery'
 import MountingInfo from '~/components/MountingInfo.vue'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { faCheck } from '@fortawesome/free-solid-svg-icons'
 
 const route = useRoute()
 const productSlug = computed(() => route.params.productSlug as string)

@@ -4,9 +4,12 @@
       <p v-if="user?.name">Hi, {{ user.name }}</p>
 
       <div v-else class="flex items-center">
-        <span class="inline-block sm:hidden material-symbols-outlined text-4xl"
+        <!-- <span class="icon inline-block sm:hidden material-symbols-outlined text-4xl"
           >account_circle</span
-        >
+        > -->
+        <FontAwesomeIcon
+          :icon="faCircleUser"
+          class="inline-block sm:hidden text-4xl"/>
         <p class="hidden sm:block">Login</p>
       </div>
     </button>
@@ -22,6 +25,8 @@
 <script setup="ts">
 import { useUserStore } from '~/stores/userStore'
 import { useRoute } from 'vue-router'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { faCircleUser } from '@fortawesome/free-regular-svg-icons'
 
 const userStore = useUserStore()
 const { user } = storeToRefs(userStore)

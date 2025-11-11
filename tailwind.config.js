@@ -10,7 +10,8 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Oswald', 'sans-serif']
+        antonio: ['Antonio', 'sans-serif'],
+        roboto: ['Roboto', 'sans-serif']
       },
       fontWeight: {
         normal: '300',
