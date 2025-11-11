@@ -18,7 +18,7 @@
     "@nuxt/image": "^1.10.0",
     "@shopify/storefront-api-client": "^1.0.3",
     "gsap": "^3.12.5",
-    "nuxt": "^3.14.1592",
+    "nuxt": "^3.16.2",
     "nuxt-graphql-client": "^0.2.43",
     "vue": "latest",
     "vue-router": "latest"
