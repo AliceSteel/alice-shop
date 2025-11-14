@@ -28,7 +28,7 @@ const { data, error } = await useFetch(`/api/categories/${category.value}`)
 if (error.value) {
   throw createError({ ...error.value })
 }
-console.log('data fetched for collection: ', data.value)
+
 products.value = data.value.products.edges as { node: Product }[]
 mountingDescription.value = data.value.description as string
 mountingPicture.value = data.value.image as {

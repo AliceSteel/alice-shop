@@ -25,7 +25,7 @@
         class="relative -left-[180%] bg-opacity-0 rounded-3xl h-max transition-all duration-300 ease-in"
         :class="{ 'left-0 bg-opacity-40': isMenuOpen }"
       >
-        <CategoryItem :category="category" @click="isMenuOpen = false" />
+        <CategoryItem :category="category"  @navigate="handleNavigate" />
       </div>
     </nav>
   </div>
@@ -35,12 +35,33 @@
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { faBars } from '@fortawesome/free-solid-svg-icons'
 import type { Category } from '~/types/Category.d'
+import CategoryItem from '~/components/CategoryItem.vue'
+import { useRouter } from 'vue-router'
+import { ref } from 'vue'
 
 const isMenuOpen = ref<boolean>(false)
 const categories = ref<Category[]>([])
+const isClosingAfterNavigation = ref<boolean>(false)
 
 const toggleMenu = () => {
   isMenuOpen.value = !isMenuOpen.value
+}
+
+const closeMenu = () => {
+  isMenuOpen.value = false
+  isClosingAfterNavigation.value = false
+}
+const nuxtApp = useNuxtApp()
+nuxtApp.hooks.hook('page:finish', () => {
+  if (isClosingAfterNavigation.value) {
+    closeMenu()
+  }
+})
+
+const router = useRouter()
+const handleNavigate = async (to: string) => {
+  isClosingAfterNavigation.value = true
+  await router.push(to)
 }
 
 const { data, error } = await useFetch('/api/categoryMeta')

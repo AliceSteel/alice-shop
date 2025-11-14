@@ -2,7 +2,10 @@
   <div>
     <NuxtLayout name="default">
       <NuxtErrorBoundary>
-        <NuxtPage />
+        <NuxtPage :transition="{
+          name: 'slide', mode: 'out-in'
+        }"
+/>
         <template #error="{ error, clearError }">
           <p>
             Oh no, something broke on client!
@@ -34,13 +37,18 @@ onMounted(() => {
 </script>
 
 <style>
-.layout-enter-active,
-.layout-leave-active {
-  transition: all 0.4s;
+.slide-enter-active,
+.slide-leave-active {
+  transition: transform 0.6s ease, opacity 0.35s ease;
 }
 
-.layout-enter-from,
-.layout-leave-to {
-  filter: grayscale(1);
+.slide-enter-from {
+  transform: translateX(60px);
+  opacity: 0;
+}
+
+.slide-leave-to {
+  transform: translateX(-60px);
+  opacity: 0;
 }
 </style>
