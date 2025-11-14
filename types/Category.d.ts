@@ -1,5 +1,5 @@
 export type Category = {
+  id: string
   name: string
-  categories?: Category[]
-  hasSubcategory?: boolean
+  title?:string
 }

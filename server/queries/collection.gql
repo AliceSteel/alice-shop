@@ -1,0 +1,11 @@
+query Collections($first: Int = 20) {
+  collections(first: $first) {
+    edges {
+      node {
+        id
+        handle
+        title
+      }
+    }
+  }
+}

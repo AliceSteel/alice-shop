@@ -4,9 +4,6 @@
       <p v-if="user?.name">Hi, {{ user.name }}</p>
 
       <div v-else class="flex items-center">
-        <!-- <span class="icon inline-block sm:hidden material-symbols-outlined text-4xl"
-          >account_circle</span
-        > -->
         <FontAwesomeIcon
           :icon="faCircleUser"
           class="inline-block sm:hidden text-4xl"/>

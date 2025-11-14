@@ -32,7 +32,7 @@
         </div>
       </section>
       <section
-        class="about-us relative top-0 z-20 backdrop-blur-sm w-full sm:w-1/2 mr-auto animated-lines flex flex-col gap-5"
+        class="about-us absolute top-3/4 sm:top-[10%] z-20 backdrop-blur-sm w-full sm:w-1/2 mr-auto animated-lines flex flex-col gap-5 px-8"
       >
         <h2 class="line">About Us</h2>
         <p class="line">
@@ -131,10 +131,10 @@ tokenCookie.value = token */
   top: 0;
 }
 
-.about-us {
+/* .about-us {
   position: absolute;
   top: 13%;
   padding: 2rem;
   box-sizing: border-box;
-}
+} */
 </style>
