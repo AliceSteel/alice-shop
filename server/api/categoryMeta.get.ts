@@ -1,13 +1,11 @@
 import type { H3Event } from 'h3'
 import { getShopifyClient } from '~/utils/getShopifyClient'
-import collectionsQuery  from '~/queries/collection'
+import { collectionsQuery }  from '~/queries/collectionsQuery'
 
 export default defineEventHandler(async (_event: H3Event) => {
   const shopifyClient = getShopifyClient()
 
-  const { data, errors } = await shopifyClient.request(collectionsQuery, {
-    first: 20
-  })
+  const { data, errors } = await shopifyClient.request(collectionsQuery(20))
 
   if (errors) {
     throw createError({
