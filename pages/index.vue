@@ -1,140 +1,105 @@
 <template>
-  <div class="w-full overflow-x-hidden">
-    <section class="min-h-[30vh] flex items-center justify-center px-9">
-      <h1>Let's make walls less boring!</h1>
-    </section>
-    <div class="pinContainer">
-      <section
-        class="comparisonSection absolute w-full sm:w-1/2 h-[60vh] aspect-square top-[10%] left-0 sm:right-0 sm:left-auto"
-      >
-        <div class="comparisonImage beforeImage w-full h-full">
-          <div
-            class="absolute top-0 z-10 w-full h-full flex items-center justify-center"
-          >
-            <FontAwesomeIcon
-              :icon="faImage"
-              class="h-12"
-            />
-          </div>
+  <div
+    class="w-full h-[200vh] relative"
+    ref="stageRef"
+    :class="domReady ? 'opacity-100' : 'opacity-0'"
+  >
+    <!-- TEXT SECTION -->
+    <section
+      class="sticky h-screen top-0 left-0 z-20 w-full sm:w-1/2 flex flex-col justify-center gap-44 px-8 text-4xl"
+    >
+      <p>welcome, art collector, art studio & everyone curious</p>
+      <div :style="lineStyle(0)">
+        <nuxt-link
+          to="/categories/posters"
+          :style="lineStyle(1)"
+          class="underline-offset-1 underline w-fit"
+        >
+          <span>Discover Original Art</span>
+          <FontAwesomeIcon :icon="faArrowRight" class="ml-2" />
+        </nuxt-link>
+      </div>
 
-          <img
-            src="../assets/elizabeth-french-km-UXgVKWZI-unsplash.jpg"
-            alt="before"
-            class="object-cover"
-          />
-        </div>
-        <div class="comparisonImage afterImage z-20 w-full h-full">
-          <img
-            src="../assets/elizabeth-french-km-UXgVKWZI-unsplash.jpg"
-            alt="after"
-            class="object-cover w-full h-full absolute top-0"
-          />
-        </div>
-      </section>
-      <section
-        class="about-us absolute top-3/4 sm:top-[10%] z-20 backdrop-blur-sm w-full sm:w-1/2 mr-auto animated-lines flex flex-col gap-5 px-8"
-      >
-        <h2 class="line">About Us</h2>
-        <p class="line">
-          Welcome to our poster shop—a vibrant online marketplace where global
-          creativity comes to life. Our passion for art knows no borders, and
-          we’ve made it our mission to bring artwork from around the world,
-          curated to inspire and delight.
-        </p>
-        <p class="line">
-          Whether you’re drawn to minimalist abstracts, bold pop art, or
-          timeless vintage designs, our handpicked selection offers something
-          for every taste and space.
-        </p>
-        <p class="line hidden sm:block">
-          Let our posters bring inspiration, individuality, and a splash of
-          global flair to your everyday surroundings.
-        </p>
-      </section>
-    </div>
+      <p class="hidden sm:block" :style="lineStyle(2)">
+        Let our posters bring inspiration, individuality, and a splash of global
+        flair.
+      </p>
+    </section>
+    <!-- Image with dimmed layer -->
+
+    <section class="fixed w-full sm:w-1/2 h-screen top-11 right-0">
+      <img
+        src="../assets/elizabeth-french-km-UXgVKWZI-unsplash.jpg"
+        alt="after"
+        class="object-cover w-full h-full"
+      />
+
+      <div
+        class="absolute inset-0 opacity-90 bg-white/65 backdrop-blur-md pointer-events-none"
+        :style="dimLayerStyle"
+      />
+    </section>
   </div>
 </template>
 
 <script setup lang="ts">
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { faImage } from '@fortawesome/free-solid-svg-icons'
-const appConfig = useAppConfig()
-const bgColor = appConfig.theme.bgClass || appConfig.theme.default
+  import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+  import { faArrowRight } from '@fortawesome/free-solid-svg-icons'
+  import { ref, computed, onMounted, onUnmounted } from 'vue'
 
-const { $gsap } = useNuxtApp() as any
-let tl: GSAPTimeline
-onMounted(() => {
-  tl = $gsap.timeline({
-    scrollTrigger: {
-      trigger: '.pinContainer',
-      start: 'center center',
-      end: '+=100%',
-      pin: true,
-      scrub: true,
-      anticipatePin: 1
+  const stageRef = ref<HTMLElement | null>(null)
+  const reveal = ref(0) // 0..100
+  const domReady = ref(false)
+
+  const textProg = ref(0) // 0..1 text reveal progress
+  let ticking = false
+
+  const dimLayerStyle = computed(() => ({
+    clipPath: `inset(0 ${reveal.value}% 0 0)`
+  }))
+
+  function clamp(v: number, min: number, max: number) {
+    return Math.min(max, Math.max(min, v))
+  }
+  function lineStyle(i: number) {
+    const start = i * 0.05
+    const p = clamp((textProg.value - start) / 0.35, 0, 1)
+    const y = 50 * (1 - p)
+    return {
+      opacity: p,
+      transform: `translateY(${y}px)`
     }
+  }
+
+  function updateFromScroll() {
+    if (!stageRef.value) return
+
+    const rect = stageRef.value.getBoundingClientRect()
+    const total = rect.height - window.innerHeight
+    const p = total > 0 ? clamp(-rect.top / total, 0, 1) : 0
+
+    reveal.value = Math.round(p * 100)
+    // Start text a bit later so it feels like old timeline timing
+    textProg.value = clamp((p - 0.12) / 0.55, 0, 1)
+  }
+
+  function onScroll() {
+    if (ticking) return
+    ticking = true
+    requestAnimationFrame(() => {
+      updateFromScroll()
+      ticking = false
+    })
+  }
+
+  onMounted(() => {
+    updateFromScroll()
+    domReady.value = true
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', updateFromScroll)
   })
-
-  tl.fromTo('.afterImage', { xPercent: 100 }, { xPercent: 0 }).fromTo(
-    '.afterImage img',
-    { xPercent: -100 },
-    { xPercent: 0 },
-    0
-  )
-
-  tl.fromTo('.about-us', { yPercent: 100 }, { yPercent: 10 }, 0.5)
-
-  tl.fromTo(
-    '.line',
-    { y: 50, opacity: 0 },
-    { y: 0, opacity: 1, duration: 0.5, stagger: 0.3 },
-    0.5
-  )
-})
-onUnmounted(() => {
-  tl.scrollTrigger?.kill()
-  tl.kill()
-})
-/*  const token = '123'
-
-const tokenCookie = useCookie('token')
-tokenCookie.value = token */
+  onUnmounted(() => {
+    window.removeEventListener('scroll', onScroll)
+    window.removeEventListener('resize', updateFromScroll)
+  })
 </script>
-
-<style scoped>
-.pinContainer {
-  height: 100vh;
-  position: relative;
-}
-
-.beforeImage img {
-  filter: blur(8px);
-}
-
-.afterImage {
-  position: absolute;
-  overflow: hidden;
-  top: 0;
-}
-
-.afterImage img {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-}
-
-.comparisonImage img {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-}
-
-/* .about-us {
-  position: absolute;
-  top: 13%;
-  padding: 2rem;
-  box-sizing: border-box;
-} */
-</style>

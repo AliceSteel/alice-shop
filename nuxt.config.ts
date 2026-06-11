@@ -16,7 +16,6 @@ export default defineNuxtConfig({
       mode: 'out-in'
     }
   },
-  plugins: ['~/plugins/gsap.js'],
   runtimeConfig: {
     public: {
       SHOPIFY_DOMAIN: process.env.SHOPIFY_DOMAIN,
@@ -27,9 +26,7 @@ export default defineNuxtConfig({
       CLIENT_ID: process.env.CLIENT_ID
     }
   },
-  build: {
-    transpile: ['gsap']
-  },
+  
   devServer: {
     host: '127.0.0.1',
     port: 3000
