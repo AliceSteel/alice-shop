@@ -29,5 +29,8 @@ export default <Partial<Config>>{
         'alice-pink': '#FFAB91'
       }
     }
-  }
+  },
+  safelist: [
+  { pattern: /bg-.+\/50/ }
+]
 }

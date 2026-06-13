@@ -1,44 +1,64 @@
 <template>
   <div
-    class="w-full h-[200vh] relative"
     ref="stageRef"
+    class="w-full h-[200vh]"
     :class="domReady ? 'opacity-100' : 'opacity-0'"
   >
-    <!-- TEXT SECTION -->
-    <section
-      class="sticky h-screen top-0 left-0 z-20 w-full sm:w-1/2 flex flex-col justify-center gap-44 px-8 text-4xl"
-    >
-      <p>welcome, art collector, art studio & everyone curious</p>
-      <div :style="lineStyle(0)">
-        <nuxt-link
-          to="/categories/posters"
-          :style="lineStyle(1)"
-          class="underline-offset-1 underline w-fit"
-        >
-          <span>Discover Original Art</span>
-          <FontAwesomeIcon :icon="faArrowRight" class="ml-2" />
-        </nuxt-link>
+    <div class="fixed inset-0">
+      <!-- Image + overlay: full screen on mobile, right half on desktop -->
+      <div class="absolute inset-0 sm:left-1/2">
+        <img
+          src="../assets/elizabeth-french-km-UXgVKWZI-unsplash.jpg"
+          class="object-cover w-full h-full"
+          alt="after"
+        />
+        <div
+          class="absolute inset-0 pointer-events-none opacity-65 backdrop-blur-sm sm:bg-white"
+          :class="bgClassTheme"
+          :style="dimLayerStyle"
+        />
       </div>
 
-      <p class="hidden sm:block" :style="lineStyle(2)">
-        Let our posters bring inspiration, individuality, and a splash of global
-        flair.
-      </p>
-    </section>
-    <!-- Image with dimmed layer -->
-
-    <section class="fixed w-full sm:w-1/2 h-screen top-11 right-0">
-      <img
-        src="../assets/elizabeth-french-km-UXgVKWZI-unsplash.jpg"
-        alt="after"
-        class="object-cover w-full h-full"
-      />
-
+      <!-- Text  -->
       <div
-        class="absolute inset-0 opacity-90 bg-white/65 backdrop-blur-md pointer-events-none"
-        :style="dimLayerStyle"
-      />
-    </section>
+        class="w-full sm:w-1/2 h-full flex flex-col justify-center gap-10 p-8 pt-9 text-3xl sm:text-4xl text-bold sm:text-normal"
+      >
+        <p
+          :class="bgClassTheme"
+          class="bg-opacity-20 rounded-full p-5 [filter:drop-shadow(0_0_12px_#96ff00)]"
+        >
+          welcome, art collector, art studio & everyone curious
+        </p>
+        <div
+          :style="lineVars(0)"
+          :class="[
+            bgClassTheme,
+            'text-bolder bg-opacity-20 rounded-full p-5 opacity-[var(--line-op)] translate-y-[var(--line-y)] [filter:drop-shadow(0_0_12px_#96ff00)]'
+          ]"
+        >
+          to a world of unique posters, where creativity meets culture.
+
+          <nuxt-link
+            to="/categories/posters"
+            :style="lineVars(1)"
+            class="underline-offset-1 underline w-fit"
+          >
+            <span>Discover Original Art</span>
+            <FontAwesomeIcon :icon="faArrowRight" class="ml-2" />
+          </nuxt-link>
+        </div>
+        <p
+          :style="lineVars(2)"
+          :class="[
+            bgClassTheme,
+            'text-bolder bg-opacity-20 rounded-full p-5 opacity-[var(--line-op)] translate-y-[var(--line-y)] [filter:drop-shadow(0_0_12px_#96ff00)]'
+          ]"
+        >
+          Let our posters bring inspiration, individuality, and a splash of
+          global flair.
+        </p>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -51,6 +71,10 @@
   const reveal = ref(0) // 0..100
   const domReady = ref(false)
 
+  const appConfig = useAppConfig()
+  const bgClassTheme = computed(
+    () => appConfig.theme.bgClass || appConfig.theme.default
+  )
   const textProg = ref(0) // 0..1 text reveal progress
   let ticking = false
 
@@ -61,7 +85,7 @@
   function clamp(v: number, min: number, max: number) {
     return Math.min(max, Math.max(min, v))
   }
-  function lineStyle(i: number) {
+  /*  function lineStyle(i: number) {
     const start = i * 0.05
     const p = clamp((textProg.value - start) / 0.35, 0, 1)
     const y = 50 * (1 - p)
@@ -70,7 +94,15 @@
       transform: `translateY(${y}px)`
     }
   }
-
+ */
+  function lineVars(i: number) {
+    const start = i * 0.05
+    const p = clamp((textProg.value - start) / 0.35, 0, 1)
+    return {
+      '--line-op': p,
+      '--line-y': `${Math.round(50 * (1 - p))}px`
+    }
+  }
   function updateFromScroll() {
     if (!stageRef.value) return
 
@@ -80,7 +112,7 @@
 
     reveal.value = Math.round(p * 100)
     // Start text a bit later so it feels like old timeline timing
-    textProg.value = clamp((p - 0.12) / 0.55, 0, 1)
+    textProg.value = clamp((p - 0.05) / 0.55, 0, 1)
   }
 
   function onScroll() {
