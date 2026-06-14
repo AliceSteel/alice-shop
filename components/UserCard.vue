@@ -1,18 +1,45 @@
 <template>
-  <div class="relative flex flex-col gap-1 backdrop-blur-sm rounded-lg p-2">
-    <button @click="clickHandler" >
+  <div
+    class="h-hull flex flex-col justify-center"
+    @click.outside="isOpen = false"
+  >
+    <button @click="clickHandler">
       <p v-if="user?.name">Hi, {{ user.name }}</p>
 
       <div v-else class="flex items-center">
-        <FontAwesomeIcon
-          :icon="faCircleUser"
-          class="inline-block sm:hidden text-4xl"/>
-        <p class="hidden sm:block">Login</p>
+        <svg
+          class="w-8 h-8"
+          width="44"
+          height="44"
+          viewBox="0 0 44 44"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle cx="22" cy="22" r="21.5" fill="#E9B759" stroke="black" />
+          <mask
+            id="mask0_59_191"
+            style="mask-type: alpha"
+            maskUnits="userSpaceOnUse"
+            x="1"
+            y="1"
+            width="42"
+            height="42"
+          >
+            <circle cx="22" cy="22" r="21" fill="#FAF8F8" />
+          </mask>
+          <g mask="url(#mask0_59_191)">
+            <ellipse cx="22" cy="33" rx="19" ry="16" fill="#FAF8F8" />
+            <ellipse cx="22" cy="9.5" rx="8" ry="7.5" fill="#FFFBFB" />
+          </g>
+        </svg>
       </div>
     </button>
 
-    <div v-if="user?.name" class="w-full absolute top-full left-0 opacity-0 max-h-0 transition-all duration-300" 
-      :class="{ 'opacity-100 max-h-96': isOpen }">
+    <div
+      v-if="user?.name"
+      class="w-full absolute top-full left-0 opacity-0 max-h-0 transition-all duration-300"
+      :class="{ 'opacity-100 max-h-96': isOpen }"
+    >
       <p>{{ user.email }}</p>
       <button @click="logoutHandler">Logout</button>
     </div>
@@ -20,116 +47,112 @@
 </template>
 
 <script setup="ts">
-import { useUserStore } from '~/stores/userStore'
-import { useRoute } from 'vue-router'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { faCircleUser } from '@fortawesome/free-regular-svg-icons'
+  import { useUserStore } from '~/stores/userStore'
+  import { useRoute } from 'vue-router'
 
-const userStore = useUserStore()
-const { user } = storeToRefs(userStore)
-const isOpen = ref(false)
-const route = useRoute()
+  const userStore = useUserStore()
+  const { user } = storeToRefs(userStore)
+  const isOpen = ref(false)
+  const route = useRoute()
 
-const clientId = useRuntimeConfig().public.CLIENT_ID
-const state = useState('state', () => generateRandomString())
-const nonce = useState('nonce', () => generateRandomString())
+  const clientId = useRuntimeConfig().public.CLIENT_ID
+  const state = useState('state', () => generateRandomString())
+  const nonce = useState('nonce', () => generateRandomString())
 
-const clickHandler = () => {
-  if (!user.value?.name) {
-    // Not logged in yet, so redirect to Shopify login
-    redirectToShopifyLogin()
-  } else {
-    isOpen.value = !isOpen.value
-  }
-}
-
-const redirectToShopifyLogin = async () => {
-  console.log('Redirecting to Shopify login from: ', route.fullPath)
-  localStorage.setItem('redirect-from-page', route.fullPath)
-
-  const verifier = await generateCodeVerifier()
-  const challenge = await generateCodeChallenge(verifier)
-  localStorage.setItem('code-verifier', verifier)
-
-  const authorizationRequestUrl = new URL(
-    `https://shopify.com/authentication/62268506202/oauth/authorize`
-  )
-
-  authorizationRequestUrl.searchParams.append(
-    'scope',
-    'openid email customer-account-api:full'
-  )
-  authorizationRequestUrl.searchParams.append('client_id', clientId)
-  authorizationRequestUrl.searchParams.append('response_type', 'code')
-
-  const redirectUri = `${window.location.origin}/login`
-  authorizationRequestUrl.searchParams.append('redirect_uri', redirectUri)
-  authorizationRequestUrl.searchParams.append('state', state.value)
-  authorizationRequestUrl.searchParams.append('nonce', nonce.value)
-  authorizationRequestUrl.searchParams.append('code_challenge', challenge)
-  authorizationRequestUrl.searchParams.append('code_challenge_method', 'S256')
-
-  window.location.href = authorizationRequestUrl.toString()
-}
-
-const logoutHandler = async () => {
-
-  const { data, error } = await useFetch('/api/shopify/logout')
-
-  if (error.value || data.value.error) {
-    console.error('Error during logout:', error.value)
-  } else {
-    console.log('Logout successful: ', data, data.value)
-    userStore.clearUserCookie()
+  const clickHandler = () => {
+    if (!user.value?.name) {
+      // Not logged in yet, so redirect to Shopify login
+      redirectToShopifyLogin()
+    } else {
+      isOpen.value = !isOpen.value
+    }
   }
 
-}
+  const redirectToShopifyLogin = async () => {
+    console.log('Redirecting to Shopify login from: ', route.fullPath)
+    localStorage.setItem('redirect-from-page', route.fullPath)
 
-/* HELPER FNs for Oauth: */
-async function generateCodeVerifier() {
-  const rando = generateRandomCode()
-  return base64UrlEncode(rando)
-}
+    const verifier = await generateCodeVerifier()
+    const challenge = await generateCodeChallenge(verifier)
+    localStorage.setItem('code-verifier', verifier)
 
-async function generateCodeChallenge(codeVerifier) {
-  const digestOp = await crypto.subtle.digest(
-    { name: 'SHA-256' },
-    new TextEncoder().encode(codeVerifier)
-  )
-  const hash = convertBufferToString(digestOp)
-  return base64UrlEncode(hash)
-}
+    const authorizationRequestUrl = new URL(
+      `https://shopify.com/authentication/62268506202/oauth/authorize`
+    )
 
-function generateRandomCode() {
-  const array = new Uint8Array(32)
-  crypto.getRandomValues(array)
-  return String.fromCharCode.apply(null, Array.from(array))
-}
+    authorizationRequestUrl.searchParams.append(
+      'scope',
+      'openid email customer-account-api:full'
+    )
+    authorizationRequestUrl.searchParams.append('client_id', clientId)
+    authorizationRequestUrl.searchParams.append('response_type', 'code')
 
-function base64UrlEncode(str) {
-  const base64 = btoa(str)
-  // This is to ensure that the encoding does not have +, /, or = characters in it.
-  return base64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '')
-}
+    const redirectUri = `${window.location.origin}/login`
+    authorizationRequestUrl.searchParams.append('redirect_uri', redirectUri)
+    authorizationRequestUrl.searchParams.append('state', state.value)
+    authorizationRequestUrl.searchParams.append('nonce', nonce.value)
+    authorizationRequestUrl.searchParams.append('code_challenge', challenge)
+    authorizationRequestUrl.searchParams.append('code_challenge_method', 'S256')
 
-function convertBufferToString(hash) {
-  const uintArray = new Uint8Array(hash)
-  const numberArray = Array.from(uintArray)
-  return String.fromCharCode(...numberArray)
-}
+    window.location.href = authorizationRequestUrl.toString()
+  }
 
-function generateRandomString(length = 16) {
-  const array = new Uint8Array(length)
-  crypto.getRandomValues(array)
-  return btoa(String.fromCharCode(...array))
-    .replace(/\+/g, '-')
-    .replace(/\//g, '_')
-    .replace(/=+$/, '')
-}
+  const logoutHandler = async () => {
+    const { data, error } = await useFetch('/api/shopify/logout')
+
+    if (error.value || data.value.error) {
+      console.error('Error during logout:', error.value)
+    } else {
+      console.log('Logout successful: ', data, data.value)
+      userStore.clearUserCookie()
+    }
+  }
+
+  /* HELPER FNs for Oauth: */
+  async function generateCodeVerifier() {
+    const rando = generateRandomCode()
+    return base64UrlEncode(rando)
+  }
+
+  async function generateCodeChallenge(codeVerifier) {
+    const digestOp = await crypto.subtle.digest(
+      { name: 'SHA-256' },
+      new TextEncoder().encode(codeVerifier)
+    )
+    const hash = convertBufferToString(digestOp)
+    return base64UrlEncode(hash)
+  }
+
+  function generateRandomCode() {
+    const array = new Uint8Array(32)
+    crypto.getRandomValues(array)
+    return String.fromCharCode.apply(null, Array.from(array))
+  }
+
+  function base64UrlEncode(str) {
+    const base64 = btoa(str)
+    // This is to ensure that the encoding does not have +, /, or = characters in it.
+    return base64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '')
+  }
+
+  function convertBufferToString(hash) {
+    const uintArray = new Uint8Array(hash)
+    const numberArray = Array.from(uintArray)
+    return String.fromCharCode(...numberArray)
+  }
+
+  function generateRandomString(length = 16) {
+    const array = new Uint8Array(length)
+    crypto.getRandomValues(array)
+    return btoa(String.fromCharCode(...array))
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=+$/, '')
+  }
 </script>
 
 <style>
-.material-symbols-outlined {
+  .material-symbols-outlined {
   font-variation-settings:
     'FILL' 0,
     'wght' 100,

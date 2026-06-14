@@ -4,14 +4,5 @@
   "compilerOptions": {
     "strict": true,
     "skipLibCheck": true
-  },
-  "include": [
-    "nuxt.config.*",
-    "app.vue",
-    "components/**/*.vue",
-    "composables/**/*.ts",
-    "layouts/**/*.vue",
-    "pages/**/*.vue",
-    "plugins/**/*.ts"
-  ]
+  }
 }

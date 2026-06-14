@@ -7,8 +7,8 @@
     <div class="fixed inset-0">
       <!-- Image + overlay: full screen on mobile, right half on desktop -->
       <div class="absolute inset-0 sm:left-1/2">
-        <img
-          src="../assets/elizabeth-french-km-UXgVKWZI-unsplash.jpg"
+        <NuxtImg
+          src="/warIsOver.jpg"
           class="object-cover w-full h-full"
           alt="after"
         />
@@ -21,11 +21,11 @@
 
       <!-- Text  -->
       <div
-        class="w-full sm:w-1/2 h-full flex flex-col justify-center gap-10 p-8 pt-9 text-3xl sm:text-4xl text-bold sm:text-normal"
+        class="w-full sm:w-1/2 h-full flex flex-col justify-center gap-10 p-4 pt-10 text-3xl sm:text-4xl text-bold sm:text-normal"
       >
         <p
           :class="bgClassTheme"
-          class="bg-opacity-20 rounded-full p-5 [filter:drop-shadow(0_0_12px_#96ff00)]"
+          class="bg-opacity-30 rounded-full p-5 [filter:drop-shadow(0_0_12px_#96ff00)]"
         >
           welcome, art collector, art studio & everyone curious
         </p>
@@ -85,16 +85,7 @@
   function clamp(v: number, min: number, max: number) {
     return Math.min(max, Math.max(min, v))
   }
-  /*  function lineStyle(i: number) {
-    const start = i * 0.05
-    const p = clamp((textProg.value - start) / 0.35, 0, 1)
-    const y = 50 * (1 - p)
-    return {
-      opacity: p,
-      transform: `translateY(${y}px)`
-    }
-  }
- */
+
   function lineVars(i: number) {
     const start = i * 0.05
     const p = clamp((textProg.value - start) / 0.35, 0, 1)
