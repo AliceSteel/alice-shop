@@ -10,11 +10,11 @@
           :alt="image.altText"
         />
       </div>
-         
-      <div
-        class="w-full sm:w-1/2 bg-white text-black uppercase relative"
+
+      <div class="w-full sm:w-1/2 bg-white text-black uppercase relative">
+        <div
+          class="sticky top-0 h-fit flex flex-col items-start justify-center px-10 py-20 gap-5"
         >
-        <div class="sticky top-0 h-fit  flex flex-col items-start justify-center px-10 py-20 gap-5"> 
           <h1>{{ product.title }}</h1>
           <p>{{ product.description }}</p>
 
@@ -34,16 +34,16 @@
                 :value="variant"
                 v-model="variantSelected"
               />
-             <span
+              <span
                 class="icon absolute top-0 left-0 w-10 h-10 flex items-center justify-center text-4xl rounded-full bg-alice-orange"
-                :class="variantSelected === variant ? 'text-white' : 'text-alice-orange'"
+                :class="
+                  variantSelected === variant
+                    ? 'text-white'
+                    : 'text-alice-orange'
+                "
               >
-                <FontAwesomeIcon
-                  :icon="faCheck"
-                  class="h-4"
-                />
+                <FontAwesomeIcon :icon="faCheck" class="h-4" />
               </span>
-              
             </label>
             {{ variant.title }} : {{ variant.price?.currencyCode }}
             {{ variant.price?.amount }}
@@ -51,7 +51,7 @@
           <button
             @click="handlePayment"
             :disabled="isLoading"
-            class="bg-alice-orange text-white p-2 rounded-xl w-inherit text-center cursor-pointer w-full uppercase"
+            class="bg-black text-white p-2 rounded-xl w-inherit text-center cursor-pointer w-full uppercase"
           >
             {{
               isLoading
@@ -60,117 +60,113 @@
             }}
           </button>
         </div>
-        
-      
       </div>
     </section>
-    <mounting-info/>
-  </div> 
+    <mounting-info />
+  </div>
 </template>
 
 <script setup lang="ts">
-import type { Product, Image, Variant } from '~/types/Product.d'
-import { getShopifyClient } from '~/utils/getShopifyClient'
-import { cartCreateMutation } from '~/queries/cartCreateMutation'
-import { checkoutUrlQuery } from '~/queries/checkoutUrlQuery'
-import MountingInfo from '~/components/MountingInfo.vue'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { faCheck } from '@fortawesome/free-solid-svg-icons'
+  import type { Product, Image, Variant } from '~/types/Product.d'
+  import { getShopifyClient } from '~/utils/getShopifyClient'
+  import { cartCreateMutation } from '~/queries/cartCreateMutation'
+  import { checkoutUrlQuery } from '~/queries/checkoutUrlQuery'
+  import MountingInfo from '~/components/MountingInfo.vue'
+  import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+  import { faCheck } from '@fortawesome/free-solid-svg-icons'
 
-const route = useRoute()
-const productSlug = computed(() => route.params.productSlug as string)
-const isLoading = ref(false)
+  const route = useRoute()
+  const productSlug = computed(() => route.params.productSlug as string)
+  const isLoading = ref(false)
 
-const product = ref<Product | null>(null)
-const { data, error } = await useFetch(
-  `/api/categories/products/${productSlug.value}`
-)
+  const product = ref<Product | null>(null)
+  const { data, error } = await useFetch(
+    `/api/categories/products/${productSlug.value}`
+  )
 
-if (error.value) {
-  console.error('Error fetching product:', error.value)
-}
-product.value = data.value
-
-useHead({
-  title: `Alice Shop - ${productSlug.value}`.toLocaleUpperCase()
-})
-const images = computed<Image[]>(
-  () => product.value?.images?.edges.map((edge: any) => edge.node) || []
-)
-const variants = computed<Variant[]>(
-  () => product.value?.variants?.edges.map((edge: any) => edge.node) || []
-)
-const price = computed(() => {
-  return variants.value.length < 2
-    ? {
-      amount: product.value?.priceRange?.minVariantPrice?.amount || 'not ',
-      currencyCode:
-        product.value?.priceRange?.minVariantPrice?.currencyCode ||
-        'available'
-    }
-    : {
-      amount: variantSelected.value?.price.amount,
-      currencyCode: variantSelected.value?.price.currencyCode
-    }
-})
-
-const variantSelected = ref<any>({
-  price: { amount: 'select', currencyCode: 'a variant' }
-})
-if (variants.value.length < 2) {
-  variantSelected.value = variants.value[0]
-}
-
-const emit = defineEmits(['handle-payment'])
-
-const paymentLink = ref('')
-const shopifyClient = getShopifyClient()
-
-const handlePayment = async () => {
-  isLoading.value = true
-  const cartCreateM = cartCreateMutation(variantSelected.value.id)
-
-  try {
-    const { data, errors } = await shopifyClient.request(cartCreateM)
-    if (errors) {
-      console.error('Error creating cart: ', errors)
-      throw createError({
-        data: errors,
-        statusCode: 404,
-        statusMessage: 'Failed to create cart'
-      })
-    }
-    if (!data || !data.cartCreate || !data.cartCreate.cart) {
-      throw new Error('Invalid response from Shopify API')
-    }
-
-    const cartId = data.cartCreate.cart.id
-
-    const checkoutUrlQ = checkoutUrlQuery(cartId)
-    const { data: checkoutData, errors: checkoutErrors } =
-      await shopifyClient.request(checkoutUrlQ)
-    if (checkoutErrors) {
-      console.error('Error fetching checkoutUrl: ', errors)
-      throw createError({
-        data: errors,
-        statusCode: 404,
-        statusMessage: 'Failed to fetch checkoutUrl'
-      })
-    }
-    paymentLink.value = checkoutData.cart.checkoutUrl
-  } catch (error) {
-    console.log('error', error)
-  } finally {
-    isLoading.value = false
+  if (error.value) {
+    console.error('Error fetching product:', error.value)
   }
-  await navigateTo(paymentLink.value, { external: true, redirectCode: 301 })
-}
+  product.value = data.value
 
+  useHead({
+    title: `Alice Shop - ${productSlug.value}`.toLocaleUpperCase()
+  })
+  const images = computed<Image[]>(
+    () => product.value?.images?.edges.map((edge: any) => edge.node) || []
+  )
+  const variants = computed<Variant[]>(
+    () => product.value?.variants?.edges.map((edge: any) => edge.node) || []
+  )
+  const price = computed(() => {
+    return variants.value.length < 2
+      ? {
+          amount: product.value?.priceRange?.minVariantPrice?.amount || 'not ',
+          currencyCode:
+            product.value?.priceRange?.minVariantPrice?.currencyCode ||
+            'available'
+        }
+      : {
+          amount: variantSelected.value?.price.amount,
+          currencyCode: variantSelected.value?.price.currencyCode
+        }
+  })
 
+  const variantSelected = ref<any>({
+    price: { amount: 'select', currencyCode: 'a variant' }
+  })
+  if (variants.value.length < 2) {
+    variantSelected.value = variants.value[0]
+  }
+
+  const emit = defineEmits(['handle-payment'])
+
+  const paymentLink = ref('')
+  const shopifyClient = getShopifyClient()
+
+  const handlePayment = async () => {
+    isLoading.value = true
+    const cartCreateM = cartCreateMutation(variantSelected.value.id)
+
+    try {
+      const { data, errors } = await shopifyClient.request(cartCreateM)
+      if (errors) {
+        console.error('Error creating cart: ', errors)
+        throw createError({
+          data: errors,
+          statusCode: 404,
+          statusMessage: 'Failed to create cart'
+        })
+      }
+      if (!data || !data.cartCreate || !data.cartCreate.cart) {
+        throw new Error('Invalid response from Shopify API')
+      }
+
+      const cartId = data.cartCreate.cart.id
+
+      const checkoutUrlQ = checkoutUrlQuery(cartId)
+      const { data: checkoutData, errors: checkoutErrors } =
+        await shopifyClient.request(checkoutUrlQ)
+      if (checkoutErrors) {
+        console.error('Error fetching checkoutUrl: ', errors)
+        throw createError({
+          data: errors,
+          statusCode: 404,
+          statusMessage: 'Failed to fetch checkoutUrl'
+        })
+      }
+      paymentLink.value = checkoutData.cart.checkoutUrl
+    } catch (error) {
+      console.log('error', error)
+    } finally {
+      isLoading.value = false
+    }
+    await navigateTo(paymentLink.value, { external: true, redirectCode: 301 })
+  }
 </script>
 
 <style>
-.material-symbols-outlined {
+  .material-symbols-outlined {
   font-variation-settings:
     'FILL' 0,
     'wght' 100,
