@@ -6,6 +6,7 @@ export default defineEventHandler(async (event) => {
     const logoutUrl = new URL(`https://shopify.com/authentication/62268506202/logout`)
     const idToken = getCookie(event, 'id_token') || '0'
     logoutUrl.searchParams.append('id_token_hint', idToken)
+    logoutUrl.searchParams.append('post_logout_redirect_uri', 'https://alice-shop.vercel.app')
 
     const req = await fetch(logoutUrl, {
       method: 'GET',

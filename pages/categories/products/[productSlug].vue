@@ -148,14 +148,17 @@
       const { data: checkoutData, errors: checkoutErrors } =
         await shopifyClient.request(checkoutUrlQ)
       if (checkoutErrors) {
-        console.error('Error fetching checkoutUrl: ', errors)
+        console.error('Error fetching checkoutUrl: ', checkoutErrors)
         throw createError({
           data: errors,
           statusCode: 404,
           statusMessage: 'Failed to fetch checkoutUrl'
         })
       }
-      paymentLink.value = checkoutData.cart.checkoutUrl
+      paymentLink.value =
+        checkoutData.cart.checkoutUrl +
+        '?return_url=' +
+        encodeURIComponent(window.location.origin)
     } catch (error) {
       console.log('error', error)
     } finally {
