@@ -85,7 +85,7 @@
 
           <nuxt-link
             to="/categories/posters"
-            class="text-base p-3 border border-current w-fit opacity-[var(--line-op)] translate-y-[var(--line-y)] tracking-widest bg-white"
+            class="text-base p-3 border border-current w-fit opacity-[var(--line-op)] translate-y-[var(--line-y)] tracking-widest bg-white sm:bg-transparent"
             :style="lineVarsFor(step2LocalP, 1)"
           >
             discover <span class="hidden md:inline-block">the collection</span>
