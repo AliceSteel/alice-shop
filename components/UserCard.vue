@@ -62,6 +62,7 @@
   const clickHandler = () => {
     if (!user.value?.name) {
       // Not logged in yet, so redirect to Shopify login
+
       redirectToShopifyLogin()
     } else {
       isOpen.value = !isOpen.value

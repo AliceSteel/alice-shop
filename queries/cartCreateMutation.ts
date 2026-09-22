@@ -1,4 +1,4 @@
-export const cartCreateMutation = (variantId: string) => `
+export const cartCreateMutation = (variantId: string, email?: string) => `
   mutation {
     cartCreate(
       input: {
@@ -7,31 +7,12 @@ export const cartCreateMutation = (variantId: string) => `
             quantity: 1
             merchandiseId: "${variantId}"
           }
-        ],
-        buyerIdentity: {
-          email: "example@example.com",
-          countryCode: CA,
-          deliveryAddressPreferences: {
-            oneTimeUse: false,
-            deliveryAddress: {
-              address1: "150 Elgin Street",
-              address2: "8th Floor",
-              city: "Ottawa",
-              province: "Ontario",
-              country: "CA",
-              zip: "K2P 1L4"
-            },
-          },
-          preferences: {
-            delivery: {
-              deliveryMethod: PICK_UP
-            }
-          },
-        }
-        attributes: {
+        ]
+        ${email ? `buyerIdentity: { email: "${email}" }` : ''}
+        attributes: [{
           key: "cart_attribute",
           value: "This is a cart attribute"
-        }
+}]
       }
     ) {
       cart {
@@ -51,14 +32,7 @@ export const cartCreateMutation = (variantId: string) => `
           }
         }
         buyerIdentity {
-          deliveryAddressPreferences {
-            __typename
-          }
-          preferences {
-            delivery {
-              deliveryMethod
-            }
-          }
+          email
         }
         attributes {
           key

@@ -74,6 +74,10 @@
   import MountingInfo from '~/components/MountingInfo.vue'
   import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
   import { faCheck } from '@fortawesome/free-solid-svg-icons'
+  import { useUserStore } from '~/stores/userStore'
+
+  const userStore = useUserStore()
+  const { user } = storeToRefs(userStore)
 
   const route = useRoute()
   const productSlug = computed(() => route.params.productSlug as string)
@@ -126,7 +130,10 @@
 
   const handlePayment = async () => {
     isLoading.value = true
-    const cartCreateM = cartCreateMutation(variantSelected.value.id)
+    const cartCreateM = cartCreateMutation(
+      variantSelected.value.id,
+      user.value?.email
+    )
 
     try {
       const { data, errors } = await shopifyClient.request(cartCreateM)

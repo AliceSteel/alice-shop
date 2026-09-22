@@ -7,14 +7,14 @@ export function getShopifyClient() {
   if (import.meta.env.SSR) {
     const client = createStorefrontApiClient({
       storeDomain: baseDomain,
-      apiVersion: '2025-04',
+      apiVersion: '2026-10',
       privateAccessToken: config.public.SHOPIFY_STOREFRONT_PRIVATE_ACCESS_TOKEN
     })
     return client
   }
   const client = createStorefrontApiClient({
     storeDomain: baseDomain,
-    apiVersion: '2025-04',
+    apiVersion: '2026-10',
     publicAccessToken: config.public.SHOPIFY_STOREFRONT_ACCESS_TOKEN
   })
   return client
