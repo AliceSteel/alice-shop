@@ -19,6 +19,7 @@
     "@shopify/storefront-api-client": "^1.0.3",
     "nuxt": "^3.16.2",
     "nuxt-graphql-client": "^0.2.43",
+    "sharp": "^0.35.4",
     "vue": "latest",
     "vue-router": "latest"
   },
@@ -34,5 +35,12 @@
     "prettier-eslint": "^16.3.0",
     "prettier-plugin-vue": "^1.1.6",
     "tailwindcss": "^3.4.16"
+  },
+  "allowScripts": {
+    "esbuild@0.28.0": true,
+    "esbuild@0.27.7": true,
+    "@parcel/watcher@2.5.6": true,
+    "sharp@0.32.6": true,
+    "vue-demi@0.14.10": true
   }
 }

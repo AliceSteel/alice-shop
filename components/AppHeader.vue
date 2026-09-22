@@ -112,9 +112,13 @@
 
   const appConfig = useAppConfig()
   const options = [
-    { name: 'transparent', value: 'bg-transparent' },
-    { name: 'Blue', value: 'bg-blue-500 text-alice-pink' },
-    { name: 'Khaki', value: 'bg-khaki text-neon-green' }
+    {
+      name: 'default',
+      value: 'bg-khaki text-white border-whitesm:text-black sm:border-black'
+    },
+    { name: 'transparent', value: 'bg-transparent text-black border-black' },
+    { name: 'blue', value: 'bg-blue-500 text-alice-pink border-alice-pink' },
+    { name: 'neon-khaki', value: 'bg-khaki text-neon-green border-neon-green' }
   ]
   const newBgTheme = ref<string>('')
 

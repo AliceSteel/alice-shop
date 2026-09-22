@@ -1,6 +1,6 @@
 export default defineAppConfig({
   theme: {
-    default: 'bg-khaki text-neon-green',
+    default: 'bg-khaki text-white border-white',
     bgClass: ''
   }
 })

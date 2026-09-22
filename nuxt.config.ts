@@ -26,9 +26,9 @@ export default defineNuxtConfig({
       CLIENT_ID: process.env.CLIENT_ID
     }
   },
-  
+
   devServer: {
-    host: '127.0.0.1',
+    host: 'localhost',
     port: 3000
   }
 })
