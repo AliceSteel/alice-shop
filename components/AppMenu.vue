@@ -17,7 +17,7 @@
     >
       <button @click.prevent.stop="toggleMenu" class="pt-1 flex items-center">
         <span v-if="isMenuOpen">X</span>
-        <FontAwesomeIcon :icon="faBars" class="w-auto" v-else />
+        <span v-else>&#9776;</span>
       </button>
       <div
         v-for="category in categories"
@@ -25,51 +25,49 @@
         class="relative -left-[180%] bg-opacity-0 rounded-3xl h-max transition-all duration-300 ease-in"
         :class="{ 'left-0 bg-opacity-40': isMenuOpen }"
       >
-        <CategoryItem :category="category"  @navigate="handleNavigate" />
+        <CategoryItem :category="category" @navigate="handleNavigate" />
       </div>
     </nav>
   </div>
 </template>
 
 <script setup lang="ts">
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { faBars } from '@fortawesome/free-solid-svg-icons'
-import type { Category } from '~/types/Category.d'
-import CategoryItem from '~/components/CategoryItem.vue'
-import { useRouter } from 'vue-router'
-import { ref } from 'vue'
+  import type { Category } from '~/types/Category.d'
+  import CategoryItem from '~/components/CategoryItem.vue'
+  import { useRouter } from 'vue-router'
+  import { ref } from 'vue'
 
-const isMenuOpen = ref<boolean>(false)
-const categories = ref<Category[]>([])
-const isClosingAfterNavigation = ref<boolean>(false)
+  const isMenuOpen = ref<boolean>(false)
+  const categories = ref<Category[]>([])
+  const isClosingAfterNavigation = ref<boolean>(false)
 
-const toggleMenu = () => {
-  isMenuOpen.value = !isMenuOpen.value
-}
-
-const closeMenu = () => {
-  isMenuOpen.value = false
-  isClosingAfterNavigation.value = false
-}
-const nuxtApp = useNuxtApp()
-nuxtApp.hooks.hook('page:finish', () => {
-  if (isClosingAfterNavigation.value) {
-    closeMenu()
+  const toggleMenu = () => {
+    isMenuOpen.value = !isMenuOpen.value
   }
-})
 
-const router = useRouter()
-const handleNavigate = async (to: string) => {
-  isClosingAfterNavigation.value = true
-  await router.push(to)
-}
-
-const { data, error } = await useFetch('/api/categoryMeta')
-if (error.value) {
-  throw createError({
-    ...error.value,
-    statusMessage: 'Could not fetch categories'
+  const closeMenu = () => {
+    isMenuOpen.value = false
+    isClosingAfterNavigation.value = false
+  }
+  const nuxtApp = useNuxtApp()
+  nuxtApp.hooks.hook('page:finish', () => {
+    if (isClosingAfterNavigation.value) {
+      closeMenu()
+    }
   })
-}
-categories.value = data.value as Category[]
+
+  const router = useRouter()
+  const handleNavigate = async (to: string) => {
+    isClosingAfterNavigation.value = true
+    await router.push(to)
+  }
+
+  const { data, error } = await useFetch('/api/categoryMeta')
+  if (error.value) {
+    throw createError({
+      ...error.value,
+      statusMessage: 'Could not fetch categories'
+    })
+  }
+  categories.value = data.value as Category[]
 </script>

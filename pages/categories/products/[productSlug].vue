@@ -42,7 +42,7 @@
                     : 'text-alice-orange'
                 "
               >
-                <FontAwesomeIcon :icon="faCheck" class="h-4" />
+                <SquareCheckBig class="h-4" />
               </span>
             </label>
             {{ variant.title }} : {{ variant.price?.currencyCode }}
@@ -72,8 +72,7 @@
   import { cartCreateMutation } from '~/queries/cartCreateMutation'
   import { checkoutUrlQuery } from '~/queries/checkoutUrlQuery'
   import MountingInfo from '~/components/MountingInfo.vue'
-  import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-  import { faCheck } from '@fortawesome/free-solid-svg-icons'
+  import { SquareCheckBig } from '@lucide/vue'
   import { useUserStore } from '~/stores/userStore'
 
   const userStore = useUserStore()

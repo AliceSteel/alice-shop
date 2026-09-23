@@ -1,7 +1,7 @@
 <template>
   <div
     ref="stageRef"
-    class="w-full h-[300vh] font-bold"
+    class="w-full h-[200vh] sm:h-[300vh] font-bold"
     :class="domReady ? 'opacity-100' : 'opacity-0'"
   >
     <div class="fixed inset-0">
@@ -26,7 +26,7 @@
       >
         <!-- Step 1 -->
         <div
-          class="absolute inset-0 xl:inset-1/3 flex flex-col justify-center gap-12 p-9 sm:p-14 md:p-10"
+          class="absolute inset-0 flex flex-col justify-center gap-12 p-9 sm:p-14 md:p-10"
           :class="[{ 'pointer-events-none': stepTransition >= 1 }]"
           :style="step1Style"
         >
@@ -60,12 +60,12 @@
         </div>
         <!-- Step 2 -->
         <div
-          class="absolute inset-0 xl:inset-1/3 flex flex-col justify-start sm:justify-center gap-4 sm:gap-12 px-9 pt-12 sm:p-14 text-black sm:text-inherit bg-white/20 sm:bg-white/0"
+          class="absolute inset-0 flex flex-col justify-start sm:justify-center gap-8 sm:gap-12 px-9 pt-12 sm:p-14 text-black sm:text-inherit bg-white/20 sm:bg-white/0"
           :class="{ 'pointer-events-none': stepTransition <= 0 }"
           :style="step2Style"
         >
           <p
-            class="h-16 border-b-[1.5px] border-current w-8 overflow-visible text-nowrap uppercase font-boldtext-base sm:text-2xl"
+            class="h-16 border-b-[1.5px] border-current w-8 overflow-visible text-nowrap uppercase font-bold text-base sm:text-2xl"
           >
             02 / live with it
           </p>
@@ -77,7 +77,7 @@
 
           <p
             :style="lineVarsFor(step2LocalP, 0)"
-            class="text-xl opacity-[var(--line-op)] translate-y-[var(--line-y)]"
+            class="hidden sm:block text-xl opacity-[var(--line-op)] translate-y-[var(--line-y)]"
           >
             Posters that feel at home <br />
             in real life
@@ -89,7 +89,7 @@
             :style="lineVarsFor(step2LocalP, 1)"
           >
             discover <span class="hidden md:inline-block">the collection</span>
-            <FontAwesomeIcon :icon="faArrowRight" class="ml-2" />
+            <MoveRight class="inline-block h-4" />
           </nuxt-link>
         </div>
       </div>
@@ -98,9 +98,8 @@
 </template>
 
 <script setup lang="ts">
-  import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-  import { faArrowRight } from '@fortawesome/free-solid-svg-icons'
   import { ref, computed, onMounted, onUnmounted } from 'vue'
+  import { MoveRight } from '@lucide/vue'
 
   const STEP_COUNT = 2
   const TRANSITION_WIDTH = 0.4 // portion of a step's scroll range used for the step1<->step2 handoff

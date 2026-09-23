@@ -1,54 +1,31 @@
 <template>
-  <div
-    class="h-hull flex flex-col justify-center"
+  <button
+    @click="clickHandler"
     @click.outside="isOpen = false"
+    class="h-full flex flex-col justify-center items-center min-w-8"
   >
-    <button @click="clickHandler">
-      <p v-if="user?.name">Hi, {{ user.name }}</p>
+    <p v-if="user?.name">Hi, {{ user.name }}</p>
 
-      <div v-else class="flex items-center">
-        <svg
-          class="w-8 h-8"
-          width="44"
-          height="44"
-          viewBox="0 0 44 44"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <circle cx="22" cy="22" r="21.5" fill="#E9B759" stroke="black" />
-          <mask
-            id="mask0_59_191"
-            style="mask-type: alpha"
-            maskUnits="userSpaceOnUse"
-            x="1"
-            y="1"
-            width="42"
-            height="42"
-          >
-            <circle cx="22" cy="22" r="21" fill="#FAF8F8" />
-          </mask>
-          <g mask="url(#mask0_59_191)">
-            <ellipse cx="22" cy="33" rx="19" ry="16" fill="#FAF8F8" />
-            <ellipse cx="22" cy="9.5" rx="8" ry="7.5" fill="#FFFBFB" />
-          </g>
-        </svg>
-      </div>
-    </button>
+    <CircleUserRound v-else :stroke-width="1" class="h-full w-full" />
+  </button>
 
-    <div
-      v-if="user?.name"
-      class="w-full absolute top-full left-0 opacity-0 max-h-0 transition-all duration-300"
-      :class="{ 'opacity-100 max-h-96': isOpen }"
-    >
-      <p>{{ user.email }}</p>
-      <button @click="logoutHandler">Logout</button>
-    </div>
+  <div
+    v-if="user?.name"
+    class="w-full absolute top-full left-0 opacity-0 max-h-0 transition-all duration-300"
+    :class="{ 'opacity-100 max-h-96': isOpen }"
+  >
+    <p>{{ user.email }}</p>
+    <button @click="logoutHandler">Logout</button>
   </div>
 </template>
 
 <script setup="ts">
   import { useUserStore } from '~/stores/userStore'
   import { useRoute } from 'vue-router'
+  //import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+  import { CircleUserRound } from '@lucide/vue'
+
+  //import { faCircleUser } from '@fortawesome/free-solid-svg-icons'
 
   const userStore = useUserStore()
   const { user } = storeToRefs(userStore)
