@@ -19,31 +19,6 @@
       <span v-if="isScrolled">.</span>
       <div>SHOP</div>
     </nuxt-link>
-    <!-- 
-    <select
-      name="theme"
-      v-model="newBgTheme"
-      @change="onSelected"
-      class="appearance-none bg-transparent w-[36px] h-full border-[0.5px] border-black text-black rounded-3xl px-3 mx-1 hover:w-28 hover:cursor-pointer transition-all duration-500 ease-in-out focus-visible:outline-none outline-none"
-    >
-      <option
-        value=""
-        disabled
-        selected
-        class="overflow-hidden bg-transparent"
-        title="theme"
-      >
-        theme
-      </option>
-      <option
-        class="bg-transparent"
-        v-for="option in options"
-        :key="option.value"
-        :value="option.value"
-      >
-        {{ option.name }}
-      </option>
-    </select> -->
     <div class="relative h-full cursor-pointer">
       <Palette
         :stroke-width="1"

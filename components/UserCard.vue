@@ -22,10 +22,7 @@
 <script setup="ts">
   import { useUserStore } from '~/stores/userStore'
   import { useRoute } from 'vue-router'
-  //import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
   import { CircleUserRound } from '@lucide/vue'
-
-  //import { faCircleUser } from '@fortawesome/free-solid-svg-icons'
 
   const userStore = useUserStore()
   const { user } = storeToRefs(userStore)
